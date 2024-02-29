@@ -150,7 +150,9 @@ class TradingDataService:
         asset_id: Optional[str] = None,
         party_ids: Optional[List[str]] = None,
         market_ids: Optional[List[str]] = None,
-        account_types: Optional[List[protos.vega.vega.AccountType]] = None,
+        account_types: Optional[
+            List[protos.vega.vega.AccountType.Value]
+        ] = None,
         max_pages: Optional[int] = None,
     ) -> List[protos.vega.vega.Account]:
         account_filter = trading_data.AccountFilter(
@@ -183,10 +185,10 @@ class TradingDataService:
     @log_client_method
     def list_orders(
         self,
-        statuses: Optional[List[protos.vega.vega.Order.Status]] = None,
-        types: Optional[List[protos.vega.vega.Order.Type]] = None,
+        statuses: Optional[List[protos.vega.vega.Order.Status.Value]] = None,
+        types: Optional[List[protos.vega.vega.Order.Type.Value]] = None,
         time_in_forces: Optional[
-            List[protos.vega.vega.Order.TimeInForce]
+            List[protos.vega.vega.Order.TimeInForce.Value]
         ] = None,
         exclude_liquidity: Optional[bool] = None,
         party_ids: Optional[List[str]] = None,
@@ -281,13 +283,17 @@ class TradingDataService:
         from_party_ids: Optional[List[str]] = None,
         from_market_ids: Optional[List[str]] = None,
         from_account_types: Optional[
-            List[protos.vega.vega.AccountType]
+            List[protos.vega.vega.AccountType.Value]
         ] = None,
         to_asset_id: Optional[str] = None,
         to_party_ids: Optional[List[str]] = None,
         to_market_ids: Optional[List[str]] = None,
-        to_account_types: Optional[List[protos.vega.vega.AccountType]] = None,
-        transfer_types: Optional[List[protos.vega.vega.TransferType]] = None,
+        to_account_types: Optional[
+            List[protos.vega.vega.AccountType.Value]
+        ] = None,
+        transfer_types: Optional[
+            List[protos.vega.vega.TransferType.Value]
+        ] = None,
         date_range_start_timestamp: Optional[int] = None,
         date_range_end_timestamp: Optional[int] = None,
         max_pages: Optional[int] = None,
@@ -624,9 +630,11 @@ class TradingDataService:
     @log_client_method
     def list_governance_data(
         self,
-        proposal_state: Optional[protos.vega.governance.Proposal.State] = None,
+        proposal_state: Optional[
+            protos.vega.governance.Proposal.State.Value
+        ] = None,
         proposal_type: Optional[
-            protos.data_node.api.v2.trading_data.ListGovernanceDataRequest.Type
+            protos.data_node.api.v2.trading_data.ListGovernanceDataRequest.Type.Value
         ] = None,
         proposer_party_id: Optional[str] = None,
         proposal_reference: Optional[str] = None,
@@ -789,7 +797,7 @@ class TradingDataService:
         start_timestamp: Optional[int] = None,
         end_timestamp: Optional[int] = None,
         source: Optional[
-            protos.vega.events.v1.events.FundingPeriodDataPoint.Source
+            protos.vega.events.v1.events.FundingPeriodDataPoint.Source.Value
         ] = None,
         seq: Optional[int] = None,
         max_pages: Optional[int] = None,
