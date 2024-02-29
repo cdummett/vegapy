@@ -1,0 +1,8 @@
+---
+version: v1
+plugins:
+  - plugin: buf.build/protocolbuffers/python
+    opt: pyi_out
+    out: ./vegapy/protobuf/protos
+  - plugin: buf.build/grpc/python
+    out: ./vegapy/protobuf/protos
