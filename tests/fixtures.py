@@ -2,6 +2,8 @@ import logging
 
 from typing import List
 import vegapy.protobuf.protos as protos
+
+from vegapy.service.networks.constants import Network
 from vegapy.service.service_trading_data import TradingDataService
 
 
@@ -9,10 +11,12 @@ from pytest import fixture
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_NETWORK = Network.NETWORK_TESTNET
+
 
 @fixture(scope="session")
 def tds():
-    client = TradingDataService(network="fairground", find_best=False)
+    client = TradingDataService(network=DEFAULT_NETWORK)
     yield client
 
 

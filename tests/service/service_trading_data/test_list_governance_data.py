@@ -1,3 +1,5 @@
+import pytest
+
 from vegapy.service.service_trading_data import TradingDataService
 from tests.fixtures import logger, tds, governance_data
 from typing import List, Any
@@ -6,6 +8,7 @@ import vegapy.protobuf.protos as protos
 import pytest
 
 
+@pytest.mark.trading_data_service
 def test_list_governance_data(tds: TradingDataService):
     for governance_data in tds.list_governance_data(max_pages=1):
         assert isinstance(
@@ -13,6 +16,7 @@ def test_list_governance_data(tds: TradingDataService):
         )
 
 
+@pytest.mark.trading_data_service
 @pytest.mark.parametrize(
     "proposal_state", protos.vega.governance.Proposal.State.values()
 )
@@ -43,6 +47,7 @@ def test_list_governance_data_proposal_state(
     logger.debug(f"Successfully tested proposal state: {expected}")
 
 
+@pytest.mark.trading_data_service
 @pytest.mark.parametrize(
     "proposal_type",
     protos.data_node.api.v2.trading_data.ListGovernanceDataRequest.Type.values(),
