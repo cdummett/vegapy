@@ -13,6 +13,7 @@ from vegapy.protobuf.protos.data_node.api.v2.trading_data_pb2_grpc import (
     TradingDataServiceStub,
 )
 import vegapy.protobuf.protos as protos
+from vegapy.service.networks.constants import Network
 
 
 logger = logging.getLogger(__name__)
@@ -71,17 +72,24 @@ def unroll_v2_pagination(
 class TradingDataService:
     def __init__(
         self,
-        network: str,
-        networks: Path = Path(__file__).parent / "networks",
-        find_best: bool = False,
+        network: Network,
+        network_config: Optional[Path] = None,
     ):
-        self.__load_config(network=network, networks=networks)
+
+        if network is Network.NETWORK_LOCAL:
+            if network_config is None:
+                raise ValueError(
+                    "A network config file must be provided for an unspecified network"
+                )
+            self.__load_config(network_config)
+        else:
+            self.__load_config(network.config)
+
         self.__node = None
         self.__grpc_nodes = dict.fromkeys(
             self.__config["API"]["GRPC"]["Hosts"], 0
         )
-        if find_best:
-            self.score_nodes()
+        self.score_nodes()
         self.switch_node()
 
     def stop(self):
@@ -133,16 +141,21 @@ class TradingDataService:
                     ("grpc.max_receive_message_length", 1024 * 1024 * 20),
                 ],
             )
-            grpc.channel_ready_future(self.__channel).result(timeout=2)
+            grpc.channel_ready_future(self.__channel).result(timeout=1)
         except grpc.FutureTimeoutError as e:
             self.__channel.close()
             raise e
 
-    def __load_config(self, network: str, networks: Path):
-        file = Path(networks, f"{network}.toml")
-        if not file.exists():
-            raise ValueError(f"Config for {file.absolute()} does not exist.")
-        self.__config = toml.load(file.absolute())
+    def __load_config(self, network_config: Path):
+        if not network_config.exists():
+            raise ValueError(
+                f"Config for {network_config.absolute()} does not exist."
+            )
+        self.__config = toml.load(network_config.absolute())
+
+    @log_client_method
+    def ping(self):
+        self.__stub.Ping(trading_data.PingRequest())
 
     @log_client_method
     def list_accounts(
