@@ -1,7 +1,14 @@
 import pytest
 
 from vegapy.service.service_trading_data import TradingDataService
-from tests.fixtures import tds, markets, parties, assets
+from tests.fixtures import (
+    tds,
+    markets,
+    parties,
+    assets,
+    start_timestamp,
+    end_timestamp,
+)
 
 import vegapy.protobuf.protos as protos
 
@@ -47,33 +54,25 @@ def test_list_ledger_entries_close_on_accounts_filter(
 
 @pytest.mark.trading_data_service
 def test_list_ledger_entries_date_range_start_timestamp(
-    tds: TradingDataService, parties
+    tds: TradingDataService, parties, start_timestamp
 ):
     from_party_ids_filter = [parties[0]]
-    date_range_start_timestamp_filter = int(
-        (datetime.datetime.now() - datetime.timedelta(days=1)).timestamp()
-        * 1e9
-    )
     for ledger_entry in tds.list_ledger_entries(
         from_party_ids=from_party_ids_filter,
-        date_range_start_timestamp=date_range_start_timestamp_filter,
+        date_range_start_timestamp=start_timestamp,
         max_pages=1,
     ):
-        assert ledger_entry.timestamp > date_range_start_timestamp_filter
+        assert ledger_entry.timestamp > start_timestamp
 
 
 @pytest.mark.trading_data_service
 def test_list_ledger_entries_date_range_end_timestamp(
-    tds: TradingDataService, parties
+    tds: TradingDataService, parties, end_timestamp
 ):
     from_party_ids_filter = [parties[0]]
-    date_range_end_timestamp_filter = int(
-        (datetime.datetime.now() - datetime.timedelta(days=1)).timestamp()
-        * 1e9
-    )
     for ledger_entry in tds.list_ledger_entries(
         from_party_ids=from_party_ids_filter,
-        date_range_end_timestamp=date_range_end_timestamp_filter,
+        date_range_end_timestamp=end_timestamp,
         max_pages=1,
     ):
-        assert ledger_entry.timestamp < date_range_end_timestamp_filter
+        assert ledger_entry.timestamp < end_timestamp

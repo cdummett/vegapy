@@ -1,7 +1,16 @@
 import pytest
 
 from vegapy.service.service_trading_data import TradingDataService
-from tests.fixtures import logger, tds, markets, assets, parties, orders
+from tests.fixtures import (
+    logger,
+    tds,
+    markets,
+    assets,
+    parties,
+    orders,
+    start_timestamp,
+    end_timestamp,
+)
 
 import vegapy.protobuf.protos as protos
 import datetime
@@ -64,27 +73,19 @@ def test_list_orders_reference(tds: TradingDataService, orders):
 
 
 @pytest.mark.trading_data_service
-def test_list_orders_start_timestamp(tds: TradingDataService):
-    start_timestamp_filter = int(
-        (datetime.datetime.now() - datetime.timedelta(days=1)).timestamp()
-        * 1e9
-    )
+def test_list_orders_start_timestamp(tds: TradingDataService, start_timestamp):
     for order in tds.list_orders(
-        start_timestamp=start_timestamp_filter, live_only=True, max_pages=1
+        start_timestamp=start_timestamp, live_only=True, max_pages=1
     ):
-        assert max(order.created_at, order.updated_at) > start_timestamp_filter
+        assert max(order.created_at, order.updated_at) > start_timestamp
 
 
 @pytest.mark.trading_data_service
-def test_list_orders_end_timestamp(tds: TradingDataService):
-    end_timestamp_filter = int(
-        (datetime.datetime.now() - datetime.timedelta(days=1)).timestamp()
-        * 1e9
-    )
+def test_list_orders_end_timestamp(tds: TradingDataService, end_timestamp):
     for order in tds.list_orders(
-        end_timestamp=end_timestamp_filter, live_only=True, max_pages=1
+        end_timestamp=end_timestamp, live_only=True, max_pages=1
     ):
-        assert max(order.created_at, order.updated_at) < end_timestamp_filter
+        assert max(order.created_at, order.updated_at) < end_timestamp
 
 
 @pytest.mark.trading_data_service
