@@ -1,18 +1,27 @@
+from typing import Optional
+from pathlib import Path
+
+from vegapy.service.utils.utils import Utils
+from vegapy.service.networks.constants import Network
 from vegapy.service.service_core import CoreService
 from vegapy.service.service_trading_data import TradingDataService
 
-from vegapy.service.utils.utils import Utils
-
-from enum import Enum
-
 
 class Service:
-    def __init__(self, network: str, find_best: bool = True):
+    def __init__(
+        self,
+        network: str,
+        network_config: Optional[Path] = None,
+    ):
         # Compartmentalise APIs
         class API:
-            def __init__(self, network: str):
+            def __init__(
+                self,
+                network: Network,
+            ):
+
                 # TODO: Implement core service APIs
-                self.__data = TradingDataService(network, find_best=find_best)
+                self.__data = TradingDataService(network, network_config)
                 self.__core = CoreService()
 
             @property

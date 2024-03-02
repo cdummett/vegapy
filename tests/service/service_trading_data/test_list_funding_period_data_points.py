@@ -1,3 +1,5 @@
+import pytest
+
 from vegapy.service.service_trading_data import TradingDataService
 from tests.fixtures import logger, tds, perpetual_markets
 
@@ -5,6 +7,7 @@ import vegapy.protobuf.protos as protos
 import datetime
 
 
+@pytest.mark.trading_data_service
 def test_list_funding_period_data_points_market_id(
     tds: TradingDataService, perpetual_markets
 ):
@@ -17,6 +20,7 @@ def test_list_funding_period_data_points_market_id(
         assert funding_period_data_point.market_id == market_id_filter
 
 
+@pytest.mark.trading_data_service
 def test_list_funding_period_data_points_start_timestamp(
     tds: TradingDataService, perpetual_markets
 ):
@@ -33,6 +37,7 @@ def test_list_funding_period_data_points_start_timestamp(
         assert funding_period_data_point.timestamp > start_timestamp_filter
 
 
+@pytest.mark.trading_data_service
 def test_list_funding_period_data_points_end_timestamp(
     tds: TradingDataService, perpetual_markets
 ):

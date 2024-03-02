@@ -1,3 +1,5 @@
+import pytest
+
 from vegapy.service.service_trading_data import TradingDataService
 from tests.fixtures import tds, markets
 
@@ -5,6 +7,7 @@ import vegapy.protobuf.protos as protos
 import datetime
 
 
+@pytest.mark.trading_data_service
 def test_get_market_data_history_by_id_market_id(
     tds: TradingDataService, markets
 ):
@@ -17,6 +20,7 @@ def test_get_market_data_history_by_id_market_id(
         assert market_data.market == market_id
 
 
+@pytest.mark.trading_data_service
 def test_get_market_data_history_by_id_start_timestamp(
     tds: TradingDataService, markets
 ):
@@ -33,6 +37,7 @@ def test_get_market_data_history_by_id_start_timestamp(
         assert market_data.timestamp > start_timestamp
 
 
+@pytest.mark.trading_data_service
 def test_get_market_data_history_by_id_end_timestamp(
     tds: TradingDataService, markets
 ):

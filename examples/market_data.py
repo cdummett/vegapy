@@ -1,11 +1,13 @@
 import argparse
+import pathlib
 import datetime
 
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from vegapy.service import Service
+from vegapy.service.service import Service
+from vegapy.service.networks.constants import Network
 from vegapy.plot.market_data import (
     overlay_mark_price,
     overlay_last_traded_price,
@@ -31,10 +33,11 @@ PARSER.add_argument(
     help="Network to create service for. Specify testnet, stagnet, or mainnet.",
 )
 PARSER.add_argument(
-    "-b",
-    "--best",
-    action="store_true",
-    help="Whether to check all list API nodes for the lowest response time",
+    "-c",
+    "--config",
+    type=str,
+    default=None,
+    help="Specify path to network config file.",
 )
 PARSER.add_argument(
     "-p",
@@ -119,7 +122,22 @@ PARSER.add_argument(
 if __name__ == "__main__":
     args = PARSER.parse_args()
 
-    service = Service(args.network, find_best=args.best)
+    # Create a service for the specified network
+    if args.network == "local":
+        network = Network.NETWORK_LOCAL
+    elif args.network == "mainnet":
+        network = Network.NETWORK_MAINNET
+    elif args.network == "stagnet":
+        network = Network.NETWORK_STAGNET
+    elif args.network == "testnet":
+        network = Network.NETWORK_TESTNET
+    else:
+        raise ValueError(
+            f"Invalid network, {args.network}, selected. Please select, local, mainnet, stagnet, or testnet."
+        )
+    service = Service(
+        network, pathlib.Path(args.config) if args.config else None
+    )
 
     # Get the market, asset, and market data for the specified market and times
     market = service.utils.market.find_market(args.market)
