@@ -745,9 +745,10 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def get_vega_time(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    def get_vega_time(self) -> int:
+        return self.__stub.GetVegaTime(
+            trading_data.GetVegaTimeRequest()
+        ).timestamp
 
     # def get_protocol_upgrade_status(
     #     self, max_pages: Optional[int] = None
