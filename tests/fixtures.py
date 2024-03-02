@@ -72,3 +72,13 @@ def governance_data(
     tds: TradingDataService,
 ) -> List[protos.vega.governance.GovernanceData]:
     return tds.list_governance_data(max_pages=1)
+
+
+@fixture(scope="session")
+def start_timestamp(tds: TradingDataService) -> int:
+    return int(tds.get_vega_time() - (1 * 60 * 60 * 1e9))
+
+
+@fixture(scope="session")
+def end_timestamp(tds: TradingDataService) -> int:
+    return int(tds.get_vega_time() - (2 * 60 * 60 * 1e9))
