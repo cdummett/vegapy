@@ -55,19 +55,16 @@ PARSER.add_argument(
     default=["BTC"],
     help="Specify substrings to match against market codes.",
 )
-DEFAULT_END_DATE = datetime.datetime.now()
-DEFAULT_START_DATE = DEFAULT_END_DATE - datetime.timedelta(hours=2)
+
 PARSER.add_argument(
     "--start_datetime",
     type=datetime.datetime.fromisoformat,
     help="Specify datetime to retrieve data from (format: YYYY-MM-DD:HH:mm:ss).",
-    default=DEFAULT_START_DATE,
 )
 PARSER.add_argument(
     "--end_datetime",
     type=datetime.datetime.fromisoformat,
     help="Specify datetime to retrieve data to (format: YYYY-MM-DD:HH:mm:ss).",
-    default=DEFAULT_END_DATE,
 )
 
 
@@ -139,13 +136,24 @@ if __name__ == "__main__":
         network, pathlib.Path(args.config) if args.config else None
     )
 
+    if args.start_datetime is None:
+        start_timestamp = int(
+            service.api.data.get_vega_time() - 1 * 60 * 60 * 1e9
+        )
+    else:
+        start_timestamp = datetime_to_timestamp(args.start_datetime, nano=True)
+    if args.end_datetime is None:
+        end_timestamp = int(service.api.data.get_vega_time())
+    else:
+        end_timestamp = datetime_to_timestamp(args.end_datetime, nano=True)
+
     # Get the market, asset, and market data for the specified market and times
     market = service.utils.market.find_market(args.market)
     asset = service.utils.market.find_settlement_asset(args.market)
     market_data_history = service.api.data.get_market_data_history_by_id(
         market_id=market.id,
-        start_timestamp=datetime_to_timestamp(args.start_datetime, nano=True),
-        end_timestamp=datetime_to_timestamp(args.end_datetime, nano=True),
+        start_timestamp=start_timestamp,
+        end_timestamp=end_timestamp,
         max_pages=args.pages,
     )
 
