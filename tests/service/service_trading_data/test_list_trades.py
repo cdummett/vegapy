@@ -1,6 +1,13 @@
 import pytest
 from vegapy.service.service_trading_data import TradingDataService
-from tests.fixtures import tds, markets, parties, orders
+from tests.fixtures import (
+    tds,
+    markets,
+    parties,
+    orders,
+    start_timestamp,
+    end_timestamp,
+)
 
 import vegapy.protobuf.protos as protos
 
@@ -36,3 +43,23 @@ def test_list_trades_party_ids(tds: TradingDataService, parties):
         assert (trade.buyer in party_ids_filter) or (
             trade.seller in party_ids_filter
         )
+
+
+@pytest.mark.trading_data_service
+def test_list_trades_date_range_start_timestamp(
+    tds: TradingDataService, start_timestamp
+):
+    for trade in tds.list_trades(
+        date_range_start_timestamp=start_timestamp, max_pages=1
+    ):
+        assert trade.timestamp > start_timestamp
+
+
+@pytest.mark.trading_data_service
+def test_list_trades_date_range_end_timestamp(
+    tds: TradingDataService, end_timestamp
+):
+    for trade in tds.list_trades(
+        date_range_end_timestamp=end_timestamp, max_pages=1
+    ):
+        assert trade.timestamp < end_timestamp

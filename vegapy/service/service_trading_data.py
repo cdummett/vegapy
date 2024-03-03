@@ -488,6 +488,8 @@ class TradingDataService:
         market_ids: Optional[List[str]] = None,
         order_ids: Optional[List[str]] = None,
         party_ids: Optional[List[str]] = None,
+        date_range_start_timestamp: Optional[int] = None,
+        date_range_end_timestamp: Optional[int] = None,
         max_pages: Optional[int] = None,
     ) -> List[protos.vega.vega.Trade]:
         return unroll_v2_pagination(
@@ -495,6 +497,10 @@ class TradingDataService:
                 market_ids=market_ids,
                 order_ids=order_ids,
                 party_ids=party_ids,
+                date_range=trading_data.DateRange(
+                    start_timestamp=date_range_start_timestamp,
+                    end_timestamp=date_range_end_timestamp,
+                ),
             ),
             request_func=lambda x: self.__stub.ListTrades(x).trades,
             extraction_func=lambda res: [i.node for i in res.edges],
