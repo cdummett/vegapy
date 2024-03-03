@@ -8,7 +8,7 @@ from vegapy.service.service_trading_data import TradingDataService
 logger = getLogger(__name__)
 
 
-class MarketUtils:
+class AssetUtils:
     def __init__(
         self, core_service: CoreService, data_service: TradingDataService
     ):
@@ -32,5 +32,5 @@ class MarketUtils:
                     match = False
                     break
             if match:
-                return asset.id
+                return asset
         raise Exception(f"Matching asset not found.")
