@@ -8,7 +8,7 @@ from matplotlib.figure import Figure
 
 from vegapy.service.service import Service
 from vegapy.service.networks.constants import Network
-from vegapy.plot.market_data import (
+from vegapy.visualisations.overlay import (
     overlay_mark_price,
     overlay_last_traded_price,
     overlay_indicative_price,
