@@ -335,3 +335,23 @@ def overlay_infrastructure_fee(
     if cumulative:
         y = np.cumsum(y)
     ax.step(x, y, label="infrastructure_fee")
+
+
+def overlay_balance(
+    ax,
+    aggregated_balances: List[
+        protos.data_node.api.v2.trading_data.AggregatedBalance
+    ],
+    asset_decimals: int,
+):
+    x = []
+    y = []
+    for aggregated_balance in aggregated_balances:
+        x.append(
+            timestamp_to_datetime(aggregated_balance.timestamp, nano=True)
+        )
+        balance = padded_int_to_float(
+            aggregated_balance.balance, asset_decimals
+        )
+        y.append(balance)
+    ax.step(x, y, label="balance")
