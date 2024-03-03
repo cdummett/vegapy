@@ -349,9 +349,36 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def list_balance_changes(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement met hod
-    #     pass
+    @log_client_method
+    def list_balance_changes(
+        self,
+        asset_id: Optional[str] = None,
+        party_ids: Optional[List[str]] = None,
+        market_ids: Optional[List[str]] = None,
+        account_types: Optional[
+            List[protos.vega.vega.AccountType.Value]
+        ] = None,
+        date_range_start_timestamp: Optional[int] = None,
+        date_range_end_timestamp: Optional[int] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[trading_data.AggregatedBalance]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListBalanceChangesRequest(
+                filter=trading_data.AccountFilter(
+                    asset_id=asset_id,
+                    party_ids=party_ids,
+                    market_ids=market_ids,
+                    account_types=account_types,
+                ),
+                date_range=trading_data.DateRange(
+                    start_timestamp=date_range_start_timestamp,
+                    end_timestamp=date_range_end_timestamp,
+                ),
+            ),
+            request_func=lambda x: self.__stub.ListBalanceChanges(x).balances,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
 
     @log_client_method
     def get_latest_market_data(
