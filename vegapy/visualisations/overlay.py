@@ -337,6 +337,32 @@ def overlay_infrastructure_fee(
     ax.step(x, y, label="infrastructure_fee")
 
 
+def overlay_network_position(
+    ax: Axes,
+    trades: List[protos.vega.vega.Trade],
+    size_decimals: int,
+):
+    x = []
+    y = []
+    last_timestamp = None
+    for trade in reversed(trades):
+        dt = timestamp_to_datetime(trade.timestamp, nano=True)
+        size = padded_int_to_float(trade.size, size_decimals)
+        if trade.buyer == "network":
+            if trade.timestamp != last_timestamp:
+                x.append(dt)
+                y.append(y[-1] if y != [] else 0)
+                last_timestamp = trade.timestamp
+            y[-1] += +size
+        if trade.seller == "network":
+            if trade.timestamp != last_timestamp:
+                x.append(dt)
+                y.append(y[-1] if y != [] else 0)
+                last_timestamp = trade.timestamp
+            y[-1] += -size
+    ax.step(x, y, label="position")
+
+
 def overlay_balance(
     ax,
     aggregated_balances: List[
