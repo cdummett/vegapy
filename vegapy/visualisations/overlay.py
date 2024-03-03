@@ -337,6 +337,82 @@ def overlay_infrastructure_fee(
     ax.step(x, y, label="infrastructure_fee")
 
 
+def overlay_network_position(
+    ax: Axes,
+    trades: List[protos.vega.vega.Trade],
+    size_decimals: int,
+):
+    x = []
+    y = []
+    last_timestamp = None
+    for trade in reversed(trades):
+        dt = timestamp_to_datetime(trade.timestamp, nano=True)
+        size = padded_int_to_float(trade.size, size_decimals)
+        if trade.buyer == "network":
+            if trade.timestamp != last_timestamp:
+                x.append(dt)
+                y.append(y[-1] if y != [] else 0)
+                last_timestamp = trade.timestamp
+            y[-1] += +size
+        if trade.seller == "network":
+            if trade.timestamp != last_timestamp:
+                x.append(dt)
+                y.append(y[-1] if y != [] else 0)
+                last_timestamp = trade.timestamp
+            y[-1] += -size
+    ax.step(x, y, label="position")
+
+
+def overlay_network_liquidations(
+    ax: Axes,
+    trades: List[protos.vega.vega.Trade],
+    size_decimals: int,
+):
+
+    x_long = []
+    y_long = []
+    x_short = []
+    y_short = []
+
+    last_timestamp_long = None
+    last_timestamp_short = None
+    for trade in trades:
+
+        if (
+            trade.type
+            != protos.vega.vega.Trade.Type.TYPE_NETWORK_CLOSE_OUT_BAD
+        ):
+            continue
+        x = timestamp_to_datetime(trade.timestamp, nano=True)
+        y = padded_int_to_float(trade.size, size_decimals)
+        if trade.buyer == "network":
+            if trade.timestamp != last_timestamp_long:
+                x_long.append(x)
+                y_long.append(0)
+                last_timestamp_long = trade.timestamp
+            y_long[-1] += -y
+        if trade.seller == "network":
+            if trade.timestamp != last_timestamp_short:
+                x_short.append(x)
+                y_short.append(0)
+                last_timestamp_short = trade.timestamp
+            y_short[-1] += y
+    ax.bar(
+        x_long,
+        y_long,
+        color="r",
+        width=datetime.timedelta(seconds=5),
+        label="liquidated_longs",
+    )
+    ax.bar(
+        x_short,
+        y_short,
+        color="g",
+        width=datetime.timedelta(seconds=5),
+        label="liquidated_shorts",
+    )
+
+
 def overlay_balance(
     ax,
     aggregated_balances: List[
