@@ -18,6 +18,11 @@ from vegapy.visualisations.overlay import (
     overlay_price_bounds,
     overlay_trading_mode,
     overlay_mark_price_sources,
+    overlay_funding_payment,
+    overlay_funding_rate,
+    overlay_internal_twap,
+    overlay_external_twap,
+    overlay_internal_composite_price,
 )
 from vegapy.utils import datetime_to_timestamp
 
@@ -114,9 +119,41 @@ PARSER.add_argument(
     action="store_true",
     help="Overlay historic mark price sources on plot.",
 )
-
+PARSER.add_argument(
+    "--funding_payment",
+    action="store_true",
+    help="Overlay historic funding payment on plot.",
+)
+PARSER.add_argument(
+    "--funding_rate",
+    action="store_true",
+    help="Overlay historic funding rate on plot.",
+)
+PARSER.add_argument(
+    "--internal_twap",
+    action="store_true",
+    help="Overlay historic internal twap on plot.",
+)
+PARSER.add_argument(
+    "--external_twap",
+    action="store_true",
+    help="Overlay historic external twap on plot.",
+)
+PARSER.add_argument(
+    "--internal_composite_price",
+    action="store_true",
+    help="Overlay historic internal composite price on plot.",
+)
 
 if __name__ == "__main__":
+
+    import yaml
+    import logging.config
+
+    with open("logging.yaml", "r") as file:
+        yaml_dict = yaml.safe_load(file)
+    logging.config.dictConfig(yaml_dict)
+
     args = PARSER.parse_args()
 
     # Create a service for the specified network
@@ -216,6 +253,34 @@ if __name__ == "__main__":
             axl,
             market_data_history=market_data_history,
             asset_decimals=asset.details.decimals,
+        )
+    if args.funding_payment:
+        overlay_funding_payment(
+            axr,
+            market_data_history=market_data_history,
+        )
+    if args.funding_rate:
+        overlay_funding_rate(
+            axr,
+            market_data_history=market_data_history,
+        )
+    if args.internal_twap:
+        overlay_internal_twap(
+            axl,
+            market_data_history=market_data_history,
+            asset_decimals=asset.details.decimals,
+        )
+    if args.external_twap:
+        overlay_external_twap(
+            axl,
+            market_data_history=market_data_history,
+            asset_decimals=asset.details.decimals,
+        )
+    if args.internal_composite_price:
+        overlay_internal_composite_price(
+            axr,
+            market_data_history=market_data_history,
+            price_decimals=market.decimal_places,
         )
 
     axl.set_title(

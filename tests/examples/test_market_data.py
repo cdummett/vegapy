@@ -102,6 +102,12 @@ def test_market_data_market_flag(market_flag):
         "--price_bounds",
         "--trading_mode",
         "--mark_price_sources",
+        "--mark_price_sources",
+        "--funding_payment",
+        "--funding_rate",
+        "--internal_twap",
+        "--external_twap",
+        "--internal_composite_price",
     ],
 )
 def test_market_data_overlay_flag(overlay_flag):
