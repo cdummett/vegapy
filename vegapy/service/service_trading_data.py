@@ -833,9 +833,28 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def list_funding_periods(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_funding_periods(
+        self,
+        market_id: str,
+        start_timestamp: Optional[int] = None,
+        end_timestamp: Optional[int] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[protos.vega.events.v1.events.FundingPeriod]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListFundingPeriodsRequest(
+                market_id=market_id,
+                date_range=protos.data_node.api.v2.trading_data.DateRange(
+                    start_timestamp=start_timestamp,
+                    end_timestamp=end_timestamp,
+                ),
+            ),
+            request_func=lambda x: self.__stub.ListFundingPeriods(
+                x
+            ).funding_periods,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
 
     @log_client_method
     def list_funding_period_data_points(
