@@ -22,7 +22,7 @@ def overlay_mid_price(
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
         price = padded_int_to_float(market_data.mid_price, price_decimals)
         y.append(price if price != 0 else np.nan)
-    ax.step(x, y, label="mid_price")
+    ax.step(x, y, label="mid_price", where="post")
 
 
 def overlay_mark_price(
@@ -36,7 +36,7 @@ def overlay_mark_price(
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
         price = padded_int_to_float(market_data.mark_price, price_decimals)
         y.append(price if price != 0 else np.nan)
-    ax.step(x, y, label="mark_price")
+    ax.step(x, y, label="mark_price", where="post")
 
 
 def overlay_last_traded_price(
@@ -52,7 +52,7 @@ def overlay_last_traded_price(
             market_data.last_traded_price, price_decimals
         )
         y.append(price if price != 0 else np.nan)
-    ax.step(x, y, label="last_traded_price")
+    ax.step(x, y, label="last_traded_price", where="post")
 
 
 def overlay_indicative_price(
@@ -64,9 +64,11 @@ def overlay_indicative_price(
     y = []
     for market_data in market_data_history:
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
-        price = padded_int_to_float(market_data.mark_price, price_decimals)
+        price = padded_int_to_float(
+            market_data.indicative_price, price_decimals
+        )
         y.append(price if price != 0 else np.nan)
-    ax.step(x, y, label="indicative_price")
+    ax.step(x, y, label="indicative_price", where="post")
 
 
 def overlay_best_bid_price(
@@ -80,7 +82,7 @@ def overlay_best_bid_price(
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
         price = padded_int_to_float(market_data.best_bid_price, price_decimals)
         y.append(price if price != 0 else np.nan)
-    ax.step(x, y, label="best_bid_price")
+    ax.step(x, y, label="best_bid_price", where="post")
 
 
 def overlay_best_ask_price(
@@ -96,7 +98,7 @@ def overlay_best_ask_price(
             market_data.best_offer_price, price_decimals
         )
         y.append(price if price != 0 else np.nan)
-    ax.step(x, y, label="best_ask_price")
+    ax.step(x, y, label="best_ask_price", where="post")
 
 
 def overlay_price_bounds(
@@ -151,11 +153,16 @@ def overlay_price_bounds(
     if all_bounds:
         for horizon, data in valid_prices.items():
             l = ax.step(
-                data["x"], data["y_min"], label=f"valid price: {horizon}"
+                data["x"],
+                data["y_min"],
+                label=f"valid price: {horizon}",
+                where="post",
             )
-            ax.step(data["x"], data["y_max"], color=l[0].get_color())
-    l = ax.step(x, y_min, label=f"tightest bound", linewidth=1.5)
-    ax.step(x, y_max, color=l[0].get_color(), linewidth=1.5)
+            ax.step(
+                data["x"], data["y_max"], color=l[0].get_color(), where="post"
+            )
+    l = ax.step(x, y_min, label=f"tightest bound", linewidth=1.5, where="post")
+    ax.step(x, y_max, color=l[0].get_color(), linewidth=1.5, where="post")
 
 
 def overlay_trading_mode(
@@ -174,6 +181,8 @@ def overlay_trading_mode(
                 trading_mode_history[trading_mode]["y"].append(0)
 
     for trading_mode, data in trading_mode_history.items():
+        if all(y == 0 for y in data["y"]):
+            continue
         ax.fill_between(
             data["x"],
             data["y"],
@@ -209,6 +218,7 @@ def overlay_mark_price_sources(
             label=key,
             alpha=1.0,
             linewidth=0.5,
+            where="post",
         )
 
 
@@ -238,7 +248,7 @@ def overlay_size(
         x.append(timestamp_to_datetime(trade.timestamp, nano=True))
         size = padded_int_to_float(trade.size, size_decimals)
         y.append(size if size != 0 else np.nan)
-    ax.step(x, y, label="size")
+    ax.step(x, y, label="size", where="post")
 
 
 def overlay_price(
@@ -252,7 +262,7 @@ def overlay_price(
         x.append(timestamp_to_datetime(trade.timestamp, nano=True))
         price = padded_int_to_float(trade.price, price_decimals)
         y.append(price if price != 0 else np.nan)
-    ax.step(x, y, label="price")
+    ax.step(x, y, label="price", where="post")
 
 
 def overlay_volume(
@@ -268,7 +278,7 @@ def overlay_volume(
         price = padded_int_to_float(trade.price, price_decimals)
         size = padded_int_to_float(trade.size, size_decimals)
         y.append(price * size if price != 0 else np.nan)
-    ax.step(x, y, label="volume")
+    ax.step(x, y, label="volume", where="post")
 
 
 def overlay_maker_fee(
@@ -290,7 +300,7 @@ def overlay_maker_fee(
         y.append(buyer_maker_fee + seller_maker_fee)
     if cumulative:
         y = np.cumsum(y)
-    ax.step(x, y, label="maker_fee")
+    ax.step(x, y, label="maker_fee", where="post")
 
 
 def overlay_liquidity_fee(
@@ -312,7 +322,7 @@ def overlay_liquidity_fee(
         y.append(buyer_liquidity_fee + seller_liquidity_fee)
     if cumulative:
         y = np.cumsum(y)
-    ax.step(x, y, label="liquidity_fee")
+    ax.step(x, y, label="liquidity_fee", where="post")
 
 
 def overlay_infrastructure_fee(
@@ -334,7 +344,7 @@ def overlay_infrastructure_fee(
         y.append(buyer_infrastructure_fee + seller_infrastructure_fee)
     if cumulative:
         y = np.cumsum(y)
-    ax.step(x, y, label="infrastructure_fee")
+    ax.step(x, y, label="infrastructure_fee", where="post")
 
 
 def overlay_network_position(
@@ -360,7 +370,7 @@ def overlay_network_position(
                 y.append(y[-1] if y != [] else 0)
                 last_timestamp = trade.timestamp
             y[-1] += -size
-    ax.step(x, y, label="position")
+    ax.step(x, y, label="position", where="post")
 
 
 def overlay_network_liquidations(
@@ -390,26 +400,26 @@ def overlay_network_liquidations(
                 x_long.append(x)
                 y_long.append(0)
                 last_timestamp_long = trade.timestamp
-            y_long[-1] += -y
+            y_long[-1] += y
         if trade.seller == "network":
             if trade.timestamp != last_timestamp_short:
                 x_short.append(x)
                 y_short.append(0)
                 last_timestamp_short = trade.timestamp
-            y_short[-1] += y
+            y_short[-1] += -y
     ax.bar(
         x_long,
         y_long,
         color="r",
-        width=datetime.timedelta(seconds=5),
-        label="liquidated_longs",
+        width=datetime.timedelta(seconds=30),
+        label="longs",
     )
     ax.bar(
         x_short,
         y_short,
         color="g",
-        width=datetime.timedelta(seconds=5),
-        label="liquidated_shorts",
+        width=datetime.timedelta(seconds=30),
+        label="shorts",
     )
 
 
@@ -430,4 +440,4 @@ def overlay_balance(
             aggregated_balance.balance, asset_decimals
         )
         y.append(balance)
-    ax.step(x, y, label="balance")
+    ax.step(x, y, label="balance", where="post")
