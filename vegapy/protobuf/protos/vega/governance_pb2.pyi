@@ -318,6 +318,7 @@ class NewSpotMarketConfiguration(_message.Message):
         "position_decimal_places",
         "sla_params",
         "liquidity_fee_settings",
+        "tick_size",
     )
     INSTRUMENT_FIELD_NUMBER: _ClassVar[int]
     DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
@@ -329,6 +330,7 @@ class NewSpotMarketConfiguration(_message.Message):
     POSITION_DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
     SLA_PARAMS_FIELD_NUMBER: _ClassVar[int]
     LIQUIDITY_FEE_SETTINGS_FIELD_NUMBER: _ClassVar[int]
+    TICK_SIZE_FIELD_NUMBER: _ClassVar[int]
     instrument: InstrumentConfiguration
     decimal_places: int
     metadata: _containers.RepeatedScalarFieldContainer[str]
@@ -339,6 +341,7 @@ class NewSpotMarketConfiguration(_message.Message):
     position_decimal_places: int
     sla_params: _markets_pb2.LiquiditySLAParameters
     liquidity_fee_settings: _markets_pb2.LiquidityFeeSettings
+    tick_size: str
     def __init__(
         self,
         instrument: _Optional[_Union[InstrumentConfiguration, _Mapping]] = ...,
@@ -363,6 +366,7 @@ class NewSpotMarketConfiguration(_message.Message):
         liquidity_fee_settings: _Optional[
             _Union[_markets_pb2.LiquidityFeeSettings, _Mapping]
         ] = ...,
+        tick_size: _Optional[str] = ...,
     ) -> None: ...
 
 class NewMarketConfiguration(_message.Message):
@@ -383,6 +387,7 @@ class NewMarketConfiguration(_message.Message):
         "liquidity_fee_settings",
         "liquidation_strategy",
         "mark_price_configuration",
+        "tick_size",
     )
     INSTRUMENT_FIELD_NUMBER: _ClassVar[int]
     DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
@@ -400,6 +405,7 @@ class NewMarketConfiguration(_message.Message):
     LIQUIDITY_FEE_SETTINGS_FIELD_NUMBER: _ClassVar[int]
     LIQUIDATION_STRATEGY_FIELD_NUMBER: _ClassVar[int]
     MARK_PRICE_CONFIGURATION_FIELD_NUMBER: _ClassVar[int]
+    TICK_SIZE_FIELD_NUMBER: _ClassVar[int]
     instrument: InstrumentConfiguration
     decimal_places: int
     metadata: _containers.RepeatedScalarFieldContainer[str]
@@ -416,6 +422,7 @@ class NewMarketConfiguration(_message.Message):
     liquidity_fee_settings: _markets_pb2.LiquidityFeeSettings
     liquidation_strategy: _markets_pb2.LiquidationStrategy
     mark_price_configuration: _markets_pb2.CompositePriceConfiguration
+    tick_size: str
     def __init__(
         self,
         instrument: _Optional[_Union[InstrumentConfiguration, _Mapping]] = ...,
@@ -450,6 +457,7 @@ class NewMarketConfiguration(_message.Message):
         mark_price_configuration: _Optional[
             _Union[_markets_pb2.CompositePriceConfiguration, _Mapping]
         ] = ...,
+        tick_size: _Optional[str] = ...,
     ) -> None: ...
 
 class NewSpotMarket(_message.Message):
@@ -523,6 +531,7 @@ class UpdateMarketConfiguration(_message.Message):
         "liquidity_fee_settings",
         "liquidation_strategy",
         "mark_price_configuration",
+        "tick_size",
     )
     INSTRUMENT_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
@@ -537,6 +546,7 @@ class UpdateMarketConfiguration(_message.Message):
     LIQUIDITY_FEE_SETTINGS_FIELD_NUMBER: _ClassVar[int]
     LIQUIDATION_STRATEGY_FIELD_NUMBER: _ClassVar[int]
     MARK_PRICE_CONFIGURATION_FIELD_NUMBER: _ClassVar[int]
+    TICK_SIZE_FIELD_NUMBER: _ClassVar[int]
     instrument: UpdateInstrumentConfiguration
     metadata: _containers.RepeatedScalarFieldContainer[str]
     price_monitoring_parameters: _markets_pb2.PriceMonitoringParameters
@@ -550,6 +560,7 @@ class UpdateMarketConfiguration(_message.Message):
     liquidity_fee_settings: _markets_pb2.LiquidityFeeSettings
     liquidation_strategy: _markets_pb2.LiquidationStrategy
     mark_price_configuration: _markets_pb2.CompositePriceConfiguration
+    tick_size: str
     def __init__(
         self,
         instrument: _Optional[
@@ -583,6 +594,7 @@ class UpdateMarketConfiguration(_message.Message):
         mark_price_configuration: _Optional[
             _Union[_markets_pb2.CompositePriceConfiguration, _Mapping]
         ] = ...,
+        tick_size: _Optional[str] = ...,
     ) -> None: ...
 
 class UpdateSpotMarketConfiguration(_message.Message):
@@ -594,6 +606,7 @@ class UpdateSpotMarketConfiguration(_message.Message):
         "log_normal",
         "sla_params",
         "liquidity_fee_settings",
+        "tick_size",
     )
     METADATA_FIELD_NUMBER: _ClassVar[int]
     PRICE_MONITORING_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
@@ -602,6 +615,7 @@ class UpdateSpotMarketConfiguration(_message.Message):
     LOG_NORMAL_FIELD_NUMBER: _ClassVar[int]
     SLA_PARAMS_FIELD_NUMBER: _ClassVar[int]
     LIQUIDITY_FEE_SETTINGS_FIELD_NUMBER: _ClassVar[int]
+    TICK_SIZE_FIELD_NUMBER: _ClassVar[int]
     metadata: _containers.RepeatedScalarFieldContainer[str]
     price_monitoring_parameters: _markets_pb2.PriceMonitoringParameters
     target_stake_parameters: _markets_pb2.TargetStakeParameters
@@ -609,6 +623,7 @@ class UpdateSpotMarketConfiguration(_message.Message):
     log_normal: _markets_pb2.LogNormalRiskModel
     sla_params: _markets_pb2.LiquiditySLAParameters
     liquidity_fee_settings: _markets_pb2.LiquidityFeeSettings
+    tick_size: str
     def __init__(
         self,
         metadata: _Optional[_Iterable[str]] = ...,
@@ -630,6 +645,7 @@ class UpdateSpotMarketConfiguration(_message.Message):
         liquidity_fee_settings: _Optional[
             _Union[_markets_pb2.LiquidityFeeSettings, _Mapping]
         ] = ...,
+        tick_size: _Optional[str] = ...,
     ) -> None: ...
 
 class UpdateInstrumentConfiguration(_message.Message):

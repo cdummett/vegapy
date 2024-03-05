@@ -121,6 +121,7 @@ class OrderError(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     ORDER_ERROR_PEGGED_ORDERS_NOT_ALLOWED_IN_ISOLATED_MARGIN_MODE: _ClassVar[
         OrderError
     ]
+    ORDER_ERROR_PRICE_NOT_IN_TICK_SIZE: _ClassVar[OrderError]
 
 class ChainStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -346,6 +347,7 @@ ORDER_ERROR_POST_ONLY_ORDER_WOULD_TRADE: OrderError
 ORDER_ERROR_REDUCE_ONLY_ORDER_WOULD_NOT_REDUCE_POSITION: OrderError
 ORDER_ERROR_ISOLATED_MARGIN_CHECK_FAILED: OrderError
 ORDER_ERROR_PEGGED_ORDERS_NOT_ALLOWED_IN_ISOLATED_MARGIN_MODE: OrderError
+ORDER_ERROR_PRICE_NOT_IN_TICK_SIZE: OrderError
 CHAIN_STATUS_UNSPECIFIED: ChainStatus
 CHAIN_STATUS_DISCONNECTED: ChainStatus
 CHAIN_STATUS_REPLAYING: ChainStatus
@@ -1416,6 +1418,7 @@ class DispatchStrategy(_message.Message):
         "lock_period",
         "distribution_strategy",
         "rank_table",
+        "cap_reward_fee_multiple",
     )
     ASSET_FOR_METRIC_FIELD_NUMBER: _ClassVar[int]
     METRIC_FIELD_NUMBER: _ClassVar[int]
@@ -1432,6 +1435,7 @@ class DispatchStrategy(_message.Message):
     LOCK_PERIOD_FIELD_NUMBER: _ClassVar[int]
     DISTRIBUTION_STRATEGY_FIELD_NUMBER: _ClassVar[int]
     RANK_TABLE_FIELD_NUMBER: _ClassVar[int]
+    CAP_REWARD_FEE_MULTIPLE_FIELD_NUMBER: _ClassVar[int]
     asset_for_metric: str
     metric: DispatchMetric
     markets: _containers.RepeatedScalarFieldContainer[str]
@@ -1445,6 +1449,7 @@ class DispatchStrategy(_message.Message):
     lock_period: int
     distribution_strategy: DistributionStrategy
     rank_table: _containers.RepeatedCompositeFieldContainer[Rank]
+    cap_reward_fee_multiple: str
     def __init__(
         self,
         asset_for_metric: _Optional[str] = ...,
@@ -1464,6 +1469,7 @@ class DispatchStrategy(_message.Message):
             _Union[DistributionStrategy, str]
         ] = ...,
         rank_table: _Optional[_Iterable[_Union[Rank, _Mapping]]] = ...,
+        cap_reward_fee_multiple: _Optional[str] = ...,
     ) -> None: ...
 
 class Rank(_message.Message):
