@@ -885,9 +885,24 @@ class TradingDataService:
             max_pages=max_pages,
         )
 
-    # def list_funding_payments(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_funding_payments(
+        self,
+        party_id: str,
+        market_id: Optional[str] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[protos.vega.events.v1.events.FundingPayment]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListFundingPaymentsRequest(
+                party_id=party_id,
+                market_id=market_id,
+            ),
+            request_func=lambda x: self.__stub.ListFundingPayments(
+                x
+            ).funding_payments,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
 
     # def get_party_activity_streak(
     #     self, max_pages: Optional[int] = None
