@@ -227,14 +227,93 @@ def overlay_internal_price_sources():
     pass
 
 
-def overlay_funding_payment():
-    # TODO: Implement function
-    pass
+def overlay_funding_payment(
+    ax: Axes, market_data_history: List[protos.vega.vega.MarketData]
+):
+    x = []
+    y = []
+    for market_data in market_data_history:
+        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
+        y.append(
+            float(market_data.product_data.perpetual_data.funding_payment)
+        )
+    ax.step(x, y, label="funding_payment", where="post")
 
 
-def overlay_funding_rate():
-    # TODO: Implement function
-    pass
+def overlay_funding_payment(
+    ax: Axes, market_data_history: List[protos.vega.vega.MarketData]
+):
+    x = []
+    y = []
+    for market_data in market_data_history:
+        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
+        y.append(float(market_data.product_data.perpetual_data.funding_rate))
+    ax.step(x, y, label="funding_payment", where="post")
+
+
+def overlay_funding_rate(
+    ax: Axes, market_data_history: List[protos.vega.vega.MarketData]
+):
+    x = []
+    y = []
+    for market_data in market_data_history:
+        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
+        y.append(float(market_data.product_data.perpetual_data.funding_rate))
+    ax.step(x, y, label="funding_rate", where="post")
+
+
+def overlay_internal_twap(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    asset_decimals: int,
+):
+    x = []
+    y = []
+    for market_data in market_data_history:
+        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
+        y.append(
+            padded_int_to_float(
+                market_data.product_data.perpetual_data.internal_twap,
+                asset_decimals,
+            )
+        )
+    ax.step(x, y, label="internal_twap", where="post")
+
+
+def overlay_external_twap(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    asset_decimals: int,
+):
+    x = []
+    y = []
+    for market_data in market_data_history:
+        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
+        y.append(
+            padded_int_to_float(
+                market_data.product_data.perpetual_data.external_twap,
+                asset_decimals,
+            )
+        )
+    ax.step(x, y, label="external_twap", where="post")
+
+
+def overlay_internal_composite_price(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    price_decimals: int,
+):
+    x = []
+    y = []
+    for market_data in market_data_history:
+        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
+        y.append(
+            padded_int_to_float(
+                market_data.product_data.perpetual_data.internal_composite_price,
+                price_decimals,
+            )
+        )
+    ax.step(x, y, label="internal_composite_price", where="post")
 
 
 def overlay_size(
