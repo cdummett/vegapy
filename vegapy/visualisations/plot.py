@@ -99,3 +99,74 @@ def liquidation_analysis(
     )
 
     return fig
+
+
+def funding_analysis(
+    asset: protos.vega.assets.Asset,
+    market: protos.vega.markets.Market,
+    market_data_history: List[protos.vega.vega.MarketData],
+    funding_periods: List[protos.vega.events.v1.events.FundingPeriod],
+    funding_period_data_points: List[
+        protos.vega.events.v1.events.FundingPeriodDataPoint
+    ],
+) -> Figure:
+
+    fig = plt.figure(tight_layout=True, figsize=(15, 8))
+    gs = fig.add_gridspec(3, 1, height_ratios=[1, 2, 2])
+
+    ax0l = fig.add_subplot(gs[0, 0])
+    ax0r: Axes = ax0l.twinx()
+    overlay_period_funding_rate(
+        ax0l, funding_periods=funding_periods, color="r"
+    )
+    overlay_trading_mode(ax0r, market_data_history)
+    overlay_funding_period_start(ax0r, funding_periods)
+    leg = ax0l.legend(loc="upper left", framealpha=1)
+    leg.remove()
+    ax0r.add_artist(leg)
+    ax0l.axhline(0, alpha=0.5, color="k", linewidth=1)
+    ax0l.set_ylabel("funding rate")
+    ax0r.set_yticks([])
+
+    ax1l = fig.add_subplot(gs[1, 0])
+    ax1r: Axes = ax1l.twinx()
+    overlay_internal_twap(ax1l, market_data_history, asset.details.decimals)
+    overlay_funding_period_data_points(
+        ax1l,
+        funding_period_data_points,
+        asset.details.decimals,
+        external=False,
+    )
+    overlay_trading_mode(ax1r, market_data_history)
+    overlay_funding_period_start(ax1r, funding_periods)
+    leg = ax1l.legend(loc="upper left", framealpha=1)
+    leg.remove()
+    ax1r.add_artist(leg)
+    ax1l.set_ylabel(f"{asset.details.symbol}")
+    ax1r.set_yticks([])
+
+    ax2l = fig.add_subplot(gs[2, 0])
+    ax2r: Axes = ax2l.twinx()
+    overlay_external_twap(ax2l, market_data_history, asset.details.decimals)
+    overlay_funding_period_data_points(
+        ax2l,
+        funding_period_data_points,
+        asset.details.decimals,
+        internal=False,
+    )
+    overlay_trading_mode(ax2r, market_data_history)
+    overlay_funding_period_start(ax2r, funding_periods)
+    leg = ax2l.legend(loc="upper left", framealpha=1)
+    leg.remove()
+    ax2r.add_artist(leg)
+    ax2l.set_ylabel(f"{asset.details.symbol}")
+    ax2r.set_yticks([])
+
+    ax2l.set_xlabel(f"datetime")
+
+    ax0l.set_title(
+        f"Funding analysis: {market.tradable_instrument.instrument.code}",
+        loc="left",
+    )
+
+    return fig
