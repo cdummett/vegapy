@@ -5,16 +5,7 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
 import vegapy.protobuf.protos as protos
-from vegapy.visualisations.overlay import (
-    overlay_mark_price,
-    overlay_last_traded_price,
-    overlay_price_bounds,
-    overlay_trading_mode,
-    overlay_balance,
-    overlay_network_position,
-    overlay_network_liquidations,
-    overlay_indicative_price,
-)
+from vegapy.visualisations.overlay import *
 
 
 def price_monitoring_analysis(
@@ -22,18 +13,22 @@ def price_monitoring_analysis(
     market_data_history: List[protos.vega.vega.MarketData],
 ) -> Figure:
 
-    fig = plt.figure(tight_layout=True)
+    fig = plt.figure(tight_layout=True, figsize=(15, 8))
     gs = fig.add_gridspec(1, 1)
 
     ax0l = fig.add_subplot(gs[:, :])
     ax0r: Axes = ax0l.twinx()
     overlay_last_traded_price(ax0l, market_data_history, market.decimal_places)
     overlay_indicative_price(ax0l, market_data_history, market.decimal_places)
-
     overlay_price_bounds(
-        ax0l, market_data_history, market.decimal_places, all_bounds=False
+        ax0l,
+        market_data_history,
+        market.decimal_places,
+        tightest_bounds=False,
     )
     overlay_trading_mode(ax0r, market_data_history)
+    overlay_auction_starts(ax0r, market_data_history)
+    overlay_auction_ends(ax0r, market_data_history)
 
     ax0l.set_title(
         f"Price Monitoring: {market.tradable_instrument.instrument.code}",
@@ -59,7 +54,7 @@ def liquidation_analysis(
     ],
 ) -> Figure:
 
-    fig = plt.figure(tight_layout=True)
+    fig = plt.figure(tight_layout=True, figsize=(15, 8))
     gs = fig.add_gridspec(3, 2, height_ratios=[1, 2, 2])
 
     ax0l = fig.add_subplot(gs[:, 0])
@@ -67,6 +62,8 @@ def liquidation_analysis(
     if market_data_history is not None:
         overlay_mark_price(ax0l, market_data_history, market.decimal_places)
         overlay_trading_mode(ax0r, market_data_history)
+        overlay_auction_starts(ax0r, market_data_history)
+        overlay_auction_ends(ax0r, market_data_history)
     ax0l.set_ylabel("price")
     ax0r.set_yticks([])
 
