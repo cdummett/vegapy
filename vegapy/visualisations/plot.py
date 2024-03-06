@@ -6,6 +6,7 @@ from matplotlib.figure import Figure
 
 import vegapy.protobuf.protos as protos
 from vegapy.visualisations.overlay import *
+from vegapy.utils import timestamp_to_datetime
 
 
 def price_monitoring_analysis(
@@ -29,6 +30,11 @@ def price_monitoring_analysis(
     overlay_trading_mode(ax0r, market_data_history)
     overlay_auction_starts(ax0r, market_data_history)
     overlay_auction_ends(ax0r, market_data_history)
+
+    ax0l.set_xlim(
+        timestamp_to_datetime(market.market_timestamps.pending, nano=True),
+        timestamp_to_datetime(market_data_history[0].timestamp, nano=True),
+    )
 
     ax0l.set_title(
         f"Price Monitoring: {market.tradable_instrument.instrument.code}",
@@ -87,6 +93,10 @@ def liquidation_analysis(
     ax3l.ticklabel_format(axis="y", style="scientific", scilimits=(6, 6))
     overlay_balance(ax3l, aggregated_balance_history, asset.details.decimals)
     ax3l.set_ylabel("insurance pool")
+    ax3l.set_xlim(
+        timestamp_to_datetime(market.market_timestamps.pending, nano=True),
+        timestamp_to_datetime(market_data_history[0].timestamp, nano=True),
+    )
 
     leg = ax0l.legend(loc="upper left", framealpha=1)
     leg.remove()
@@ -130,6 +140,7 @@ def funding_analysis(
 
     ax1l = fig.add_subplot(gs[1, 0])
     ax1r: Axes = ax1l.twinx()
+    ax1l.sharex(ax0l)
     overlay_internal_twap(ax1l, market_data_history, asset.details.decimals)
     overlay_funding_period_data_points(
         ax1l,
@@ -144,9 +155,9 @@ def funding_analysis(
     ax1r.add_artist(leg)
     ax1l.set_ylabel(f"{asset.details.symbol}")
     ax1r.set_yticks([])
-
     ax2l = fig.add_subplot(gs[2, 0])
     ax2r: Axes = ax2l.twinx()
+    ax2l.sharex(ax0l)
     overlay_external_twap(ax2l, market_data_history, asset.details.decimals)
     overlay_funding_period_data_points(
         ax2l,
@@ -163,6 +174,10 @@ def funding_analysis(
     ax2r.set_yticks([])
 
     ax2l.set_xlabel(f"datetime")
+    ax2l.set_xlim(
+        timestamp_to_datetime(market.market_timestamps.pending, nano=True),
+        timestamp_to_datetime(market_data_history[0].timestamp, nano=True),
+    )
 
     ax0l.set_title(
         f"Funding analysis: {market.tradable_instrument.instrument.code}",
