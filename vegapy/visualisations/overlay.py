@@ -152,19 +152,24 @@ def overlay_price_bounds(
 
     if tightest_bounds:
         l = ax.step(
-            x, y_min, label=f"tightest bound", linewidth=1.5, where="post"
+            x, y_min, label=f"tightest bound", linewidth=0.6, where="post"
         )
-        ax.step(x, y_max, color=l[0].get_color(), linewidth=1.5, where="post")
+        ax.step(x, y_max, color=l[0].get_color(), linewidth=0.6, where="post")
     else:
         for horizon, data in valid_prices.items():
             l = ax.step(
                 data["x"],
                 data["y_min"],
                 label=f"valid price: {horizon}",
+                linewidth=0.6,
                 where="post",
             )
             ax.step(
-                data["x"], data["y_max"], color=l[0].get_color(), where="post"
+                data["x"],
+                data["y_max"],
+                color=l[0].get_color(),
+                linewidth=0.6,
+                where="post",
             )
 
 
@@ -538,14 +543,14 @@ def overlay_network_liquidations(
         x_long,
         y_long,
         color="r",
-        width=datetime.timedelta(seconds=30),
+        width=60 / (24 * 60 * 60),
         label="longs",
     )
     ax.bar(
         x_short,
         y_short,
         color="g",
-        width=datetime.timedelta(seconds=30),
+        width=60 / (24 * 60 * 60),
         label="shorts",
     )
 
@@ -585,7 +590,7 @@ def overlay_period_funding_payment(
         x,
         y,
         label="period_funding_payment",
-        width=datetime.timedelta(seconds=30),
+        width=60 / (24 * 60 * 60),
         color=color,
     )
 
@@ -605,7 +610,7 @@ def overlay_period_funding_rate(
         x,
         y,
         label="period_funding_rate",
-        width=datetime.timedelta(seconds=30),
+        width=60 / (24 * 60 * 60),
         color=color,
     )
 
