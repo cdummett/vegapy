@@ -2,7 +2,7 @@ import datetime
 import numpy as np
 import vegapy.protobuf.protos as protos
 
-from typing import List
+from typing import List, Optional
 from matplotlib.axes import Axes
 from collections import defaultdict
 from vegapy.utils import (
@@ -105,7 +105,7 @@ def overlay_price_bounds(
     ax: Axes,
     market_data_history: List[protos.vega.vega.MarketData],
     price_decimals: int,
-    all_bounds: bool = True,
+    tightest_bounds: bool = True,
 ):
     x = []
     y_min = []
@@ -150,7 +150,12 @@ def overlay_price_bounds(
         y_min.append(max_min_valid_price)
         y_max.append(min_max_valid_price)
 
-    if all_bounds:
+    if tightest_bounds:
+        l = ax.step(
+            x, y_min, label=f"tightest bound", linewidth=1.5, where="post"
+        )
+        ax.step(x, y_max, color=l[0].get_color(), linewidth=1.5, where="post")
+    else:
         for horizon, data in valid_prices.items():
             l = ax.step(
                 data["x"],
@@ -161,8 +166,54 @@ def overlay_price_bounds(
             ax.step(
                 data["x"], data["y_max"], color=l[0].get_color(), where="post"
             )
-    l = ax.step(x, y_min, label=f"tightest bound", linewidth=1.5, where="post")
-    ax.step(x, y_max, color=l[0].get_color(), linewidth=1.5, where="post")
+
+
+def overlay_auction_starts(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+):
+    auction_starts = set()
+    for market_data in market_data_history:
+        if market_data.auction_start == 0:
+            continue
+        auction_starts.add(
+            timestamp_to_datetime(market_data.auction_start, nano=True)
+        )
+    color = None
+    for x in auction_starts:
+        l = ax.axvline(
+            x,
+            alpha=0.25,
+            linewidth=0.5,
+            color=color,
+            label="auction_start" if color is None else None,
+        )
+        if color is None:
+            color = l.get_color()
+
+
+def overlay_auction_ends(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+):
+    auction_ends = set()
+    for market_data in market_data_history:
+        if market_data.auction_end == 0:
+            continue
+        auction_ends.add(
+            timestamp_to_datetime(market_data.auction_end, nano=True)
+        )
+    color = None
+    for x in auction_ends:
+        l = ax.axvline(
+            x,
+            alpha=0.25,
+            linewidth=0.5,
+            color=color,
+            label="auction_end" if color is None else None,
+        )
+        if color is None:
+            color = l.get_color()
 
 
 def overlay_trading_mode(
