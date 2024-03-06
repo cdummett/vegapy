@@ -284,21 +284,11 @@ def overlay_funding_payment(
     x = []
     y = []
     for market_data in market_data_history:
-        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
-        y.append(
-            float(market_data.product_data.perpetual_data.funding_payment)
+        funding_payment = (
+            market_data.product_data.perpetual_data.funding_payment
         )
-    ax.step(x, y, label="funding_payment", where="post")
-
-
-def overlay_funding_payment(
-    ax: Axes, market_data_history: List[protos.vega.vega.MarketData]
-):
-    x = []
-    y = []
-    for market_data in market_data_history:
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
-        y.append(float(market_data.product_data.perpetual_data.funding_rate))
+        y.append(float(funding_payment) if funding_payment != "" else np.nan)
     ax.step(x, y, label="funding_payment", where="post")
 
 
@@ -308,8 +298,9 @@ def overlay_funding_rate(
     x = []
     y = []
     for market_data in market_data_history:
+        funding_rate = market_data.product_data.perpetual_data.funding_rate
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
-        y.append(float(market_data.product_data.perpetual_data.funding_rate))
+        y.append(float(funding_rate) if funding_rate != "" else np.nan)
     ax.step(x, y, label="funding_rate", where="post")
 
 
@@ -321,10 +312,13 @@ def overlay_internal_twap(
     x = []
     y = []
     for market_data in market_data_history:
+        internal_twap = market_data.product_data.perpetual_data.internal_twap
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
         y.append(
-            padded_int_to_float(
-                market_data.product_data.perpetual_data.internal_twap,
+            np.NaN
+            if (internal_twap == "" or internal_twap == "0")
+            else padded_int_to_float(
+                internal_twap,
                 asset_decimals,
             )
         )
@@ -339,10 +333,13 @@ def overlay_external_twap(
     x = []
     y = []
     for market_data in market_data_history:
+        external_twap = market_data.product_data.perpetual_data.external_twap
         x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
         y.append(
-            padded_int_to_float(
-                market_data.product_data.perpetual_data.external_twap,
+            np.NaN
+            if (external_twap == "" or external_twap == "0")
+            else padded_int_to_float(
+                external_twap,
                 asset_decimals,
             )
         )
@@ -571,3 +568,149 @@ def overlay_balance(
         )
         y.append(balance)
     ax.step(x, y, label="balance", where="post")
+
+
+def overlay_period_funding_payment(
+    ax: Axes,
+    funding_periods: List[protos.vega.events.v1.events.FundingPeriod],
+    color: Optional[str] = None,
+):
+    x = []
+    y = []
+    for funding_period in funding_periods:
+        funding_payment = funding_period.funding_payment
+        x.append(timestamp_to_datetime(funding_period.end, nano=True))
+        y.append(float(funding_payment) if funding_payment != "" else np.nan)
+    ax.bar(
+        x,
+        y,
+        label="period_funding_payment",
+        width=datetime.timedelta(seconds=30),
+        color=color,
+    )
+
+
+def overlay_period_funding_rate(
+    ax: Axes,
+    funding_periods: List[protos.vega.events.v1.events.FundingPeriod],
+    color: Optional[str] = None,
+):
+    x = []
+    y = []
+    for funding_period in funding_periods:
+        funding_rate = funding_period.funding_rate
+        x.append(timestamp_to_datetime(funding_period.end, nano=True))
+        y.append(float(funding_rate) if funding_rate != "" else np.nan)
+    ax.bar(
+        x,
+        y,
+        label="period_funding_rate",
+        width=datetime.timedelta(seconds=30),
+        color=color,
+    )
+
+
+def overlay_funding_period_start(
+    ax: Axes,
+    funding_periods: List[protos.vega.events.v1.events.FundingPeriod],
+    color: Optional[str] = None,
+):
+    funding_period_starts = set()
+    for funding_period in funding_periods:
+        if funding_period.start == 0:
+            continue
+        funding_period_starts.add(
+            timestamp_to_datetime(funding_period.start, nano=True)
+        )
+    color = None
+    for x in funding_period_starts:
+        l = ax.axvline(
+            x,
+            alpha=0.4,
+            color=color,
+            linewidth=0.4,
+            label="funding_period_start" if color is None else None,
+        )
+        if color is None:
+            color = l.get_color()
+
+
+def overlay_funding_period_end(
+    ax: Axes,
+    funding_periods: List[protos.vega.events.v1.events.FundingPeriod],
+    color: Optional[str] = None,
+):
+    funding_period_ends = set()
+    for funding_period in funding_periods:
+        if funding_period.end == 0:
+            continue
+        funding_period_ends.add(
+            timestamp_to_datetime(funding_period.end, nano=True)
+        )
+    color = None
+    for x in funding_period_ends:
+        l = ax.axvline(
+            x,
+            alpha=0.4,
+            color=color,
+            linewidth=0.4,
+            label="funding_period_end" if color is None else None,
+        )
+        if color is None:
+            color = l.get_color()
+
+
+def overlay_funding_period_data_points(
+    ax: Axes,
+    data_points: List[protos.vega.events.v1.events.FundingPeriodDataPoint],
+    asset_decimals: int,
+    internal: bool = True,
+    external: bool = True,
+):
+    internal_x = []
+    internal_y = []
+    external_x = []
+    external_y = []
+
+    for data_point in data_points:
+        datetime = timestamp_to_datetime(data_point.timestamp, nano=True)
+        if (
+            data_point.data_point_type
+            == protos.vega.events.v1.events.FundingPeriodDataPoint.Source.SOURCE_INTERNAL
+        ):
+            internal_x.append(datetime)
+            internal_y.append(
+                padded_int_to_float(data_point.price, asset_decimals)
+                if data_point.price != ""
+                else np.nan
+            )
+        if (
+            data_point.data_point_type
+            == protos.vega.events.v1.events.FundingPeriodDataPoint.Source.SOURCE_EXTERNAL
+        ):
+            external_x.append(datetime)
+            external_y.append(
+                padded_int_to_float(data_point.price, asset_decimals)
+                if data_point.price != ""
+                else np.nan
+            )
+    if internal:
+        ax.step(
+            internal_x,
+            internal_y,
+            marker="o",
+            markersize=3,
+            alpha=0.5,
+            label="internal_data_points",
+            where="post",
+        )
+    if external:
+        ax.step(
+            external_x,
+            external_y,
+            marker="o",
+            markersize=3,
+            alpha=0.5,
+            label="external_data_points",
+            where="post",
+        )
