@@ -193,7 +193,6 @@ def funding_analysis(
     )
     ax3l.axhline(0, alpha=0.5, color="k", linewidth=1)
 
-
     ax0l.set_title(
         f"Funding analysis: {market.tradable_instrument.instrument.code}",
         loc="left",
