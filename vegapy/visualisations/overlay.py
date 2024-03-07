@@ -351,6 +351,28 @@ def overlay_external_twap(
     ax.step(x, y, label="external_twap", where="post")
 
 
+def overlay_twap_difference(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    color: Optional[str] = None,
+):
+    x = []
+    y = []
+    for market_data in market_data_history:
+        internal_twap = market_data.product_data.perpetual_data.internal_twap
+        external_twap = market_data.product_data.perpetual_data.external_twap
+        x.append(timestamp_to_datetime(market_data.timestamp, nano=True))
+        if internal_twap in ["", "0"] or external_twap in ["", "0"]:
+            y.append(np.NaN)
+        else:
+            y.append(
+                100
+                * (int(internal_twap) - int(external_twap))
+                / int(internal_twap)
+            )
+    ax.step(x, y, label="twap_difference", color=color, where="post")
+
+
 def overlay_internal_composite_price(
     ax: Axes,
     market_data_history: List[protos.vega.vega.MarketData],

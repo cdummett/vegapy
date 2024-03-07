@@ -80,14 +80,14 @@ def liquidation_analysis(
     ax1l.ticklabel_format(axis="y", style="sci", scilimits=(3, 3))
     overlay_network_liquidations(ax1l, trades, market.position_decimal_places)
     ax1l.legend(loc="upper left", framealpha=1)
-    ax1l.set_ylabel("volume")
+    ax1l.set_ylabel("closeout volume")
 
     ax2l = fig.add_subplot(gs[1, 1])
     ax2l.sharex(ax0l)
     ax2l.axhline(0, alpha=0.5, color="k", linewidth=1)
     ax2l.ticklabel_format(axis="y", style="sci", scilimits=(3, 3))
     overlay_network_position(ax2l, trades, market.position_decimal_places)
-    ax2l.set_ylabel("position")
+    ax2l.set_ylabel("network position")
 
     ax3l = fig.add_subplot(gs[2, 1])
     ax3l.sharex(ax0l)
@@ -123,7 +123,7 @@ def funding_analysis(
 ) -> Figure:
 
     fig = plt.figure(tight_layout=True, figsize=(15, 8))
-    gs = fig.add_gridspec(3, 1, height_ratios=[1, 2, 2])
+    gs = fig.add_gridspec(4, 1, height_ratios=[1, 3, 3, 2])
 
     ax0l = fig.add_subplot(gs[0, 0])
     ax0r: Axes = ax0l.twinx()
@@ -173,12 +173,25 @@ def funding_analysis(
     ax2r.add_artist(leg)
     ax2l.set_ylabel(f"{asset.details.symbol}")
     ax2r.set_yticks([])
-
-    ax2l.set_xlabel(f"datetime")
-    ax2l.set_xlim(
+    ax3l = fig.add_subplot(gs[3, 0])
+    ax3r: Axes = ax3l.twinx()
+    ax3l.sharex(ax0l)
+    overlay_twap_difference(
+        ax3l, market_data_history=market_data_history, color="y"
+    )
+    overlay_trading_mode(ax3r, market_data_history)
+    overlay_funding_period_start(ax3r, funding_periods)
+    leg = ax3l.legend(loc="upper left", framealpha=1)
+    leg.remove()
+    ax3r.add_artist(leg)
+    ax3l.set_ylabel(f"difference [%]")
+    ax3r.set_yticks([])
+    ax3l.set_xlabel(f"datetime")
+    ax3l.set_xlim(
         timestamp_to_datetime(market.market_timestamps.pending, nano=True),
         timestamp_to_datetime(market_data_history[0].timestamp, nano=True),
     )
+    ax3l.axhline(0, alpha=0.5, color="k", linewidth=1)
 
     ax0l.set_title(
         f"Funding analysis: {market.tradable_instrument.instrument.code}",
