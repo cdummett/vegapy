@@ -12,6 +12,7 @@ from vegapy.utils import timestamp_to_datetime
 def price_monitoring_analysis(
     market: protos.vega.markets.Market,
     market_data_history: List[protos.vega.vega.MarketData],
+    tightest_bounds: bool = True,
 ) -> Figure:
 
     fig = plt.figure(tight_layout=True, figsize=(15, 8))
@@ -25,7 +26,7 @@ def price_monitoring_analysis(
         ax0l,
         market_data_history,
         market.decimal_places,
-        tightest_bounds=False,
+        tightest_bounds=tightest_bounds,
     )
     overlay_trading_mode(ax0r, market_data_history)
     overlay_auction_starts(ax0r, market_data_history)
