@@ -33,8 +33,9 @@ def price_monitoring_analysis(
     overlay_auction_ends(ax0r, market_data_history)
 
     ax0l.set_xlim(
-        timestamp_to_datetime(market.market_timestamps.pending, nano=True),
-        timestamp_to_datetime(market_data_history[0].timestamp, nano=True),
+        right=timestamp_to_datetime(
+            market_data_history[0].timestamp, nano=True
+        ),
     )
 
     ax0l.set_title(
@@ -95,8 +96,9 @@ def liquidation_analysis(
     overlay_balance(ax3l, aggregated_balance_history, asset.details.decimals)
     ax3l.set_ylabel("insurance pool")
     ax3l.set_xlim(
-        timestamp_to_datetime(market.market_timestamps.pending, nano=True),
-        timestamp_to_datetime(market_data_history[0].timestamp, nano=True),
+        right=timestamp_to_datetime(
+            market_data_history[0].timestamp, nano=True
+        ),
     )
 
     leg = ax0l.legend(loc="upper left", framealpha=1)
@@ -188,8 +190,9 @@ def funding_analysis(
     ax3r.set_yticks([])
     ax3l.set_xlabel(f"datetime")
     ax3l.set_xlim(
-        timestamp_to_datetime(market.market_timestamps.pending, nano=True),
-        timestamp_to_datetime(market_data_history[0].timestamp, nano=True),
+        right=timestamp_to_datetime(
+            market_data_history[0].timestamp, nano=True
+        ),
     )
     ax3l.axhline(0, alpha=0.5, color="k", linewidth=1)
 

@@ -3,3 +3,4 @@ __pycache__/
 .vscode
 extern/*
 .DS_Store
+plots/*
