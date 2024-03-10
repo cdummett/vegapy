@@ -462,9 +462,13 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def list_candle_intervals(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_candle_intervals(
+        self, market_id: str
+    ) -> List[trading_data.IntervalToCandleId]:
+        return self.__stub.ListCandleIntervals(
+            trading_data.ListCandleIntervalsRequest(market_id=market_id)
+        ).interval_to_candle_id
 
     # def list_votes(self, max_pages: Optional[int] = None) -> Any:
     #     # TODO: Implement method
