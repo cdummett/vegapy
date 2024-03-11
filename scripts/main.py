@@ -81,6 +81,8 @@ if __name__ == "__main__":
         end_timestamp=end_timestamp,
         max_pages=args.pages,
     )
+    trades = None
+    aggregated_balance_history = None
     if args.liquidations:
         trades = service.api.data.list_trades(
             market_ids=[market.id],
@@ -96,6 +98,8 @@ if __name__ == "__main__":
             date_range_start_timestamp=start_timestamp,
             date_range_end_timestamp=end_timestamp,
         )
+    funding_periods = None
+    funding_period_data_points = None
     if args.funding:
         funding_periods = service.api.data.list_funding_periods(
             market_id=market.id,
@@ -111,26 +115,31 @@ if __name__ == "__main__":
         )
 
     # Build figures and optionally save or show
-    fig_m = vis.plot.price_monitoring_analysis(
-        market, market_data_history, tightest_bounds=args.tight
-    )
-    fig_l = vis.plot.liquidation_analysis(
-        asset,
-        market,
-        trades,
-        market_data_history,
-        aggregated_balance_history,
-    )
-    fig_f = vis.plot.funding_analysis(
-        asset,
-        market,
-        market_data_history,
-        funding_periods,
-        funding_period_data_points,
-    )
-    if args.save:
-        fig_f.savefig(f"plots/{datetime.datetime.now()}-funding.png")
-        fig_m.savefig(f"plots/{datetime.datetime.now()}-monitoring.png")
-        fig_l.savefig(f"plots/{datetime.datetime.now()}-liquidations.png")
+    if args.monitoring:
+        fig_m = vis.plot.price_monitoring_analysis(
+            market, market_data_history, tightest_bounds=args.tight
+        )
+        if args.save:
+            fig_m.savefig(f"plots/{datetime.datetime.now()}-monitoring.png")
+    if args.liquidations:
+        fig_l = vis.plot.liquidation_analysis(
+            asset,
+            market,
+            trades,
+            market_data_history,
+            aggregated_balance_history,
+        )
+        if args.save:
+            fig_l.savefig(f"plots/{datetime.datetime.now()}-liquidations.png")
+    if args.funding:
+        fig_f = vis.plot.funding_analysis(
+            asset,
+            market,
+            market_data_history,
+            funding_periods,
+            funding_period_data_points,
+        )
+        if args.save:
+            fig_f.savefig(f"plots/{datetime.datetime.now()}-funding.png")
     if args.show:
         plt.show()
