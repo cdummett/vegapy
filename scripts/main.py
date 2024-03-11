@@ -1,3 +1,4 @@
+import os
 import logging
 import datetime
 from pathlib import Path
@@ -114,7 +115,11 @@ if __name__ == "__main__":
             )
         )
 
+
     # Build figures and optionally save or show
+    if args.save:
+        if not os.path.exists("plots"):
+            os.makedirs("plots")
     if args.monitoring:
         fig_m = vis.plot.price_monitoring_analysis(
             market, market_data_history, tightest_bounds=args.tight
