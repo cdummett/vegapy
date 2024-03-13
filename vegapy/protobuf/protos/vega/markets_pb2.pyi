@@ -450,7 +450,6 @@ class LiquidityFeeSettings(_message.Message):
         METHOD_MARGINAL_COST: _ClassVar[LiquidityFeeSettings.Method]
         METHOD_WEIGHTED_AVERAGE: _ClassVar[LiquidityFeeSettings.Method]
         METHOD_CONSTANT: _ClassVar[LiquidityFeeSettings.Method]
-
     METHOD_UNSPECIFIED: LiquidityFeeSettings.Method
     METHOD_MARGINAL_COST: LiquidityFeeSettings.Method
     METHOD_WEIGHTED_AVERAGE: LiquidityFeeSettings.Method
@@ -499,6 +498,7 @@ class Market(_message.Message):
         "liquidity_sla_params",
         "liquidation_strategy",
         "mark_price_configuration",
+        "tick_size",
     )
 
     class State(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
@@ -514,7 +514,6 @@ class Market(_message.Message):
         STATE_TRADING_TERMINATED: _ClassVar[Market.State]
         STATE_SETTLED: _ClassVar[Market.State]
         STATE_SUSPENDED_VIA_GOVERNANCE: _ClassVar[Market.State]
-
     STATE_UNSPECIFIED: Market.State
     STATE_PROPOSED: Market.State
     STATE_REJECTED: Market.State
@@ -536,7 +535,6 @@ class Market(_message.Message):
         TRADING_MODE_MONITORING_AUCTION: _ClassVar[Market.TradingMode]
         TRADING_MODE_NO_TRADING: _ClassVar[Market.TradingMode]
         TRADING_MODE_SUSPENDED_VIA_GOVERNANCE: _ClassVar[Market.TradingMode]
-
     TRADING_MODE_UNSPECIFIED: Market.TradingMode
     TRADING_MODE_CONTINUOUS: Market.TradingMode
     TRADING_MODE_BATCH_AUCTION: Market.TradingMode
@@ -564,6 +562,7 @@ class Market(_message.Message):
     LIQUIDITY_SLA_PARAMS_FIELD_NUMBER: _ClassVar[int]
     LIQUIDATION_STRATEGY_FIELD_NUMBER: _ClassVar[int]
     MARK_PRICE_CONFIGURATION_FIELD_NUMBER: _ClassVar[int]
+    TICK_SIZE_FIELD_NUMBER: _ClassVar[int]
     id: str
     tradable_instrument: TradableInstrument
     decimal_places: int
@@ -584,6 +583,7 @@ class Market(_message.Message):
     liquidity_sla_params: LiquiditySLAParameters
     liquidation_strategy: LiquidationStrategy
     mark_price_configuration: CompositePriceConfiguration
+    tick_size: str
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -618,6 +618,7 @@ class Market(_message.Message):
         mark_price_configuration: _Optional[
             _Union[CompositePriceConfiguration, _Mapping]
         ] = ...,
+        tick_size: _Optional[str] = ...,
     ) -> None: ...
 
 class MarketTimestamps(_message.Message):

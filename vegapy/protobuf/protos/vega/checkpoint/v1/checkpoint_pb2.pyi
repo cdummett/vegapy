@@ -432,9 +432,9 @@ class Banking(_message.Message):
     governance_transfers_at_time: _containers.RepeatedCompositeFieldContainer[
         ScheduledGovernanceTransferAtTime
     ]
-    recurring_governance_transfers: (
-        _containers.RepeatedCompositeFieldContainer[GovernanceTransfer]
-    )
+    recurring_governance_transfers: _containers.RepeatedCompositeFieldContainer[
+        GovernanceTransfer
+    ]
     def __init__(
         self,
         transfers_at_time: _Optional[
@@ -487,9 +487,9 @@ class Validators(_message.Message):
     pending_key_rotations: _containers.RepeatedCompositeFieldContainer[
         PendingKeyRotation
     ]
-    pending_ethereum_key_rotations: (
-        _containers.RepeatedCompositeFieldContainer[PendingEthereumKeyRotation]
-    )
+    pending_ethereum_key_rotations: _containers.RepeatedCompositeFieldContainer[
+        PendingEthereumKeyRotation
+    ]
     def __init__(
         self,
         validator_state: _Optional[
@@ -594,11 +594,9 @@ class MarketTracker(_message.Message):
     taker_notional_volume: _containers.RepeatedCompositeFieldContainer[
         TakerNotionalVolume
     ]
-    market_to_party_taker_notional_volume: (
-        _containers.RepeatedCompositeFieldContainer[
-            MarketToPartyTakerNotionalVolume
-        ]
-    )
+    market_to_party_taker_notional_volume: _containers.RepeatedCompositeFieldContainer[
+        MarketToPartyTakerNotionalVolume
+    ]
     def __init__(
         self,
         market_activity: _Optional[
@@ -676,16 +674,12 @@ class MarketActivityTracker(_message.Message):
     lp_fees_history: _containers.RepeatedCompositeFieldContainer[
         EpochPartyFees
     ]
-    time_weighted_position_data_history: (
-        _containers.RepeatedCompositeFieldContainer[
-            EpochTimeWeightPositionData
-        ]
-    )
-    time_weighted_notional_data_history: (
-        _containers.RepeatedCompositeFieldContainer[
-            EpochTimeWeightedNotionalData
-        ]
-    )
+    time_weighted_position_data_history: _containers.RepeatedCompositeFieldContainer[
+        EpochTimeWeightPositionData
+    ]
+    time_weighted_notional_data_history: _containers.RepeatedCompositeFieldContainer[
+        EpochTimeWeightedNotionalData
+    ]
     returns_data_history: _containers.RepeatedCompositeFieldContainer[
         EpochReturnsData
     ]

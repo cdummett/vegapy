@@ -146,7 +146,6 @@ PARSER.add_argument(
 )
 
 if __name__ == "__main__":
-
     import yaml
     import logging.config
 

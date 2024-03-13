@@ -19,7 +19,6 @@ class Service:
                 self,
                 network: Network,
             ):
-
                 # TODO: Implement core service APIs
                 self.__data = TradingDataService(network, network_config)
                 self.__core = CoreService()

@@ -14,7 +14,6 @@ def price_monitoring_analysis(
     market_data_history: List[protos.vega.vega.MarketData],
     tightest_bounds: bool = True,
 ) -> Figure:
-
     fig = plt.figure(tight_layout=True, figsize=(15, 8))
     gs = fig.add_gridspec(1, 1)
 
@@ -61,7 +60,6 @@ def liquidation_analysis(
         protos.data_node.api.v2.trading_data.AggregatedBalance
     ],
 ) -> Figure:
-
     fig = plt.figure(tight_layout=True, figsize=(15, 8))
     gs = fig.add_gridspec(3, 2, height_ratios=[1, 2, 2])
 
@@ -123,7 +121,6 @@ def funding_analysis(
         protos.vega.events.v1.events.FundingPeriodDataPoint
     ],
 ) -> Figure:
-
     fig = plt.figure(tight_layout=True, figsize=(15, 8))
     gs = fig.add_gridspec(4, 1, height_ratios=[1, 3, 3, 2])
 

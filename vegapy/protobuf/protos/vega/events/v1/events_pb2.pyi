@@ -127,6 +127,9 @@ class BusEventType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     BUS_EVENT_TYPE_PARTY_MARGIN_MODE_UPDATED: _ClassVar[BusEventType]
     BUS_EVENT_TYPE_PARTY_PROFILE_UPDATED: _ClassVar[BusEventType]
     BUS_EVENT_TYPE_TEAMS_STATS_UPDATED: _ClassVar[BusEventType]
+    BUS_EVENT_TYPE_TIME_WEIGHTED_NOTIONAL_POSITION_UPDATED: _ClassVar[
+        BusEventType
+    ]
     BUS_EVENT_TYPE_MARKET: _ClassVar[BusEventType]
     BUS_EVENT_TYPE_TX_ERROR: _ClassVar[BusEventType]
 
@@ -222,8 +225,36 @@ BUS_EVENT_TYPE_TRANSFER_FEES_DISCOUNT_UPDATED: BusEventType
 BUS_EVENT_TYPE_PARTY_MARGIN_MODE_UPDATED: BusEventType
 BUS_EVENT_TYPE_PARTY_PROFILE_UPDATED: BusEventType
 BUS_EVENT_TYPE_TEAMS_STATS_UPDATED: BusEventType
+BUS_EVENT_TYPE_TIME_WEIGHTED_NOTIONAL_POSITION_UPDATED: BusEventType
 BUS_EVENT_TYPE_MARKET: BusEventType
 BUS_EVENT_TYPE_TX_ERROR: BusEventType
+
+class TimeWeightedNotionalPositionUpdated(_message.Message):
+    __slots__ = (
+        "epoch_seq",
+        "asset",
+        "party",
+        "game_id",
+        "time_weighted_notional_position",
+    )
+    EPOCH_SEQ_FIELD_NUMBER: _ClassVar[int]
+    ASSET_FIELD_NUMBER: _ClassVar[int]
+    PARTY_FIELD_NUMBER: _ClassVar[int]
+    GAME_ID_FIELD_NUMBER: _ClassVar[int]
+    TIME_WEIGHTED_NOTIONAL_POSITION_FIELD_NUMBER: _ClassVar[int]
+    epoch_seq: int
+    asset: str
+    party: str
+    game_id: str
+    time_weighted_notional_position: str
+    def __init__(
+        self,
+        epoch_seq: _Optional[int] = ...,
+        asset: _Optional[str] = ...,
+        party: _Optional[str] = ...,
+        game_id: _Optional[str] = ...,
+        time_weighted_notional_position: _Optional[str] = ...,
+    ) -> None: ...
 
 class VestingBalancesSummary(_message.Message):
     __slots__ = ("epoch_seq", "parties_vesting_summary")
@@ -587,7 +618,6 @@ class FundingPeriodDataPoint(_message.Message):
         SOURCE_UNSPECIFIED: _ClassVar[FundingPeriodDataPoint.Source]
         SOURCE_EXTERNAL: _ClassVar[FundingPeriodDataPoint.Source]
         SOURCE_INTERNAL: _ClassVar[FundingPeriodDataPoint.Source]
-
     SOURCE_UNSPECIFIED: FundingPeriodDataPoint.Source
     SOURCE_EXTERNAL: FundingPeriodDataPoint.Source
     SOURCE_INTERNAL: FundingPeriodDataPoint.Source
@@ -738,7 +768,6 @@ class Transfer(_message.Message):
         STATUS_REJECTED: _ClassVar[Transfer.Status]
         STATUS_STOPPED: _ClassVar[Transfer.Status]
         STATUS_CANCELLED: _ClassVar[Transfer.Status]
-
     STATUS_UNSPECIFIED: Transfer.Status
     STATUS_PENDING: Transfer.Status
     STATUS_DONE: Transfer.Status
@@ -870,7 +899,6 @@ class StakeLinking(_message.Message):
         TYPE_UNSPECIFIED: _ClassVar[StakeLinking.Type]
         TYPE_LINK: _ClassVar[StakeLinking.Type]
         TYPE_UNLINK: _ClassVar[StakeLinking.Type]
-
     TYPE_UNSPECIFIED: StakeLinking.Type
     TYPE_LINK: StakeLinking.Type
     TYPE_UNLINK: StakeLinking.Type
@@ -881,7 +909,6 @@ class StakeLinking(_message.Message):
         STATUS_PENDING: _ClassVar[StakeLinking.Status]
         STATUS_ACCEPTED: _ClassVar[StakeLinking.Status]
         STATUS_REJECTED: _ClassVar[StakeLinking.Status]
-
     STATUS_UNSPECIFIED: StakeLinking.Status
     STATUS_PENDING: StakeLinking.Status
     STATUS_ACCEPTED: StakeLinking.Status
@@ -943,7 +970,6 @@ class ERC20MultiSigSignerEvent(_message.Message):
         TYPE_UNSPECIFIED: _ClassVar[ERC20MultiSigSignerEvent.Type]
         TYPE_ADDED: _ClassVar[ERC20MultiSigSignerEvent.Type]
         TYPE_REMOVED: _ClassVar[ERC20MultiSigSignerEvent.Type]
-
     TYPE_UNSPECIFIED: ERC20MultiSigSignerEvent.Type
     TYPE_ADDED: ERC20MultiSigSignerEvent.Type
     TYPE_REMOVED: ERC20MultiSigSignerEvent.Type
@@ -1228,7 +1254,6 @@ class TransactionResult(_message.Message):
         ERROR_FIELD_NUMBER: _ClassVar[int]
         error: str
         def __init__(self, error: _Optional[str] = ...) -> None: ...
-
     PARTY_ID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     HASH_FIELD_NUMBER: _ClassVar[int]
@@ -1275,9 +1300,7 @@ class TransactionResult(_message.Message):
     withdraw_submission: _commands_pb2.WithdrawSubmission
     delegate_submission: _commands_pb2.DelegateSubmission
     undelegate_submission: _commands_pb2.UndelegateSubmission
-    liquidity_provision_cancellation: (
-        _commands_pb2.LiquidityProvisionCancellation
-    )
+    liquidity_provision_cancellation: _commands_pb2.LiquidityProvisionCancellation
     liquidity_provision_amendment: _commands_pb2.LiquidityProvisionAmendment
     transfer: _commands_pb2.Transfer
     cancel_transfer: _commands_pb2.CancelTransfer
@@ -1287,9 +1310,7 @@ class TransactionResult(_message.Message):
     issue_signatures: _commands_pb2.IssueSignatures
     batch_market_instructions: _commands_pb2.BatchMarketInstructions
     key_rotate_submission: _validator_commands_pb2.KeyRotateSubmission
-    ethereum_key_rotate_submission: (
-        _validator_commands_pb2.EthereumKeyRotateSubmission
-    )
+    ethereum_key_rotate_submission: _validator_commands_pb2.EthereumKeyRotateSubmission
     stop_order_submission: _commands_pb2.StopOrdersSubmission
     stop_order_cancellation: _commands_pb2.StopOrdersCancellation
     create_referral_set: _commands_pb2.CreateReferralSet
@@ -1453,9 +1474,7 @@ class TxErrorEvent(_message.Message):
     withdraw_submission: _commands_pb2.WithdrawSubmission
     delegate_submission: _commands_pb2.DelegateSubmission
     undelegate_submission: _commands_pb2.UndelegateSubmission
-    liquidity_provision_cancellation: (
-        _commands_pb2.LiquidityProvisionCancellation
-    )
+    liquidity_provision_cancellation: _commands_pb2.LiquidityProvisionCancellation
     liquidity_provision_amendment: _commands_pb2.LiquidityProvisionAmendment
     transfer: _commands_pb2.Transfer
     cancel_transfer: _commands_pb2.CancelTransfer
@@ -2542,6 +2561,7 @@ class BusEvent(_message.Message):
         "party_margin_mode_updated",
         "party_profile_updated",
         "teams_stats_updated",
+        "time_weighted_notional_position_updated",
         "market",
         "tx_err_event",
         "version",
@@ -2635,6 +2655,7 @@ class BusEvent(_message.Message):
     PARTY_MARGIN_MODE_UPDATED_FIELD_NUMBER: _ClassVar[int]
     PARTY_PROFILE_UPDATED_FIELD_NUMBER: _ClassVar[int]
     TEAMS_STATS_UPDATED_FIELD_NUMBER: _ClassVar[int]
+    TIME_WEIGHTED_NOTIONAL_POSITION_UPDATED_FIELD_NUMBER: _ClassVar[int]
     MARKET_FIELD_NUMBER: _ClassVar[int]
     TX_ERR_EVENT_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
@@ -2727,6 +2748,7 @@ class BusEvent(_message.Message):
     party_margin_mode_updated: PartyMarginModeUpdated
     party_profile_updated: PartyProfileUpdated
     teams_stats_updated: TeamsStatsUpdated
+    time_weighted_notional_position_updated: TimeWeightedNotionalPositionUpdated
     market: MarketEvent
     tx_err_event: TxErrorEvent
     version: int
@@ -2906,6 +2928,9 @@ class BusEvent(_message.Message):
         ] = ...,
         teams_stats_updated: _Optional[
             _Union[TeamsStatsUpdated, _Mapping]
+        ] = ...,
+        time_weighted_notional_position_updated: _Optional[
+            _Union[TimeWeightedNotionalPositionUpdated, _Mapping]
         ] = ...,
         market: _Optional[_Union[MarketEvent, _Mapping]] = ...,
         tx_err_event: _Optional[_Union[TxErrorEvent, _Mapping]] = ...,

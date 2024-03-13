@@ -106,9 +106,9 @@ class OrderError(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     ORDER_ERROR_SELL_CANNOT_REFERENCE_BEST_BID_PRICE: _ClassVar[OrderError]
     ORDER_ERROR_OFFSET_MUST_BE_GREATER_THAN_ZERO: _ClassVar[OrderError]
     ORDER_ERROR_INSUFFICIENT_ASSET_BALANCE: _ClassVar[OrderError]
-    ORDER_ERROR_CANNOT_AMEND_PEGGED_ORDER_DETAILS_ON_NON_PEGGED_ORDER: (
-        _ClassVar[OrderError]
-    )
+    ORDER_ERROR_CANNOT_AMEND_PEGGED_ORDER_DETAILS_ON_NON_PEGGED_ORDER: _ClassVar[
+        OrderError
+    ]
     ORDER_ERROR_UNABLE_TO_REPRICE_PEGGED_ORDER: _ClassVar[OrderError]
     ORDER_ERROR_UNABLE_TO_AMEND_PRICE_ON_PEGGED_ORDER: _ClassVar[OrderError]
     ORDER_ERROR_NON_PERSISTENT_ORDER_OUT_OF_PRICE_BOUNDS: _ClassVar[OrderError]
@@ -121,6 +121,7 @@ class OrderError(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     ORDER_ERROR_PEGGED_ORDERS_NOT_ALLOWED_IN_ISOLATED_MARGIN_MODE: _ClassVar[
         OrderError
     ]
+    ORDER_ERROR_PRICE_NOT_IN_TICK_SIZE: _ClassVar[OrderError]
 
 class ChainStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -346,6 +347,7 @@ ORDER_ERROR_POST_ONLY_ORDER_WOULD_TRADE: OrderError
 ORDER_ERROR_REDUCE_ONLY_ORDER_WOULD_NOT_REDUCE_POSITION: OrderError
 ORDER_ERROR_ISOLATED_MARGIN_CHECK_FAILED: OrderError
 ORDER_ERROR_PEGGED_ORDERS_NOT_ALLOWED_IN_ISOLATED_MARGIN_MODE: OrderError
+ORDER_ERROR_PRICE_NOT_IN_TICK_SIZE: OrderError
 CHAIN_STATUS_UNSPECIFIED: ChainStatus
 CHAIN_STATUS_DISCONNECTED: ChainStatus
 CHAIN_STATUS_REPLAYING: ChainStatus
@@ -511,7 +513,6 @@ class StopOrder(_message.Message):
         SIZE_OVERRIDE_SETTING_POSITION: _ClassVar[
             StopOrder.SizeOverrideSetting
         ]
-
     SIZE_OVERRIDE_SETTING_UNSPECIFIED: StopOrder.SizeOverrideSetting
     SIZE_OVERRIDE_SETTING_NONE: StopOrder.SizeOverrideSetting
     SIZE_OVERRIDE_SETTING_POSITION: StopOrder.SizeOverrideSetting
@@ -521,7 +522,6 @@ class StopOrder(_message.Message):
         EXPIRY_STRATEGY_UNSPECIFIED: _ClassVar[StopOrder.ExpiryStrategy]
         EXPIRY_STRATEGY_CANCELS: _ClassVar[StopOrder.ExpiryStrategy]
         EXPIRY_STRATEGY_SUBMIT: _ClassVar[StopOrder.ExpiryStrategy]
-
     EXPIRY_STRATEGY_UNSPECIFIED: StopOrder.ExpiryStrategy
     EXPIRY_STRATEGY_CANCELS: StopOrder.ExpiryStrategy
     EXPIRY_STRATEGY_SUBMIT: StopOrder.ExpiryStrategy
@@ -531,7 +531,6 @@ class StopOrder(_message.Message):
         TRIGGER_DIRECTION_UNSPECIFIED: _ClassVar[StopOrder.TriggerDirection]
         TRIGGER_DIRECTION_RISES_ABOVE: _ClassVar[StopOrder.TriggerDirection]
         TRIGGER_DIRECTION_FALLS_BELOW: _ClassVar[StopOrder.TriggerDirection]
-
     TRIGGER_DIRECTION_UNSPECIFIED: StopOrder.TriggerDirection
     TRIGGER_DIRECTION_RISES_ABOVE: StopOrder.TriggerDirection
     TRIGGER_DIRECTION_FALLS_BELOW: StopOrder.TriggerDirection
@@ -545,7 +544,6 @@ class StopOrder(_message.Message):
         STATUS_TRIGGERED: _ClassVar[StopOrder.Status]
         STATUS_EXPIRED: _ClassVar[StopOrder.Status]
         STATUS_REJECTED: _ClassVar[StopOrder.Status]
-
     STATUS_UNSPECIFIED: StopOrder.Status
     STATUS_PENDING: StopOrder.Status
     STATUS_CANCELLED: StopOrder.Status
@@ -578,42 +576,28 @@ class StopOrder(_message.Message):
         REJECTION_REASON_STOP_ORDER_LINKED_PERCENTAGE_INVALID: _ClassVar[
             StopOrder.RejectionReason
         ]
-        REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_DURING_OPENING_AUCTION: (
-            _ClassVar[StopOrder.RejectionReason]
-        )
+        REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_DURING_OPENING_AUCTION: _ClassVar[
+            StopOrder.RejectionReason
+        ]
         REJECTION_REASON_STOP_ORDER_CANNOT_MATCH_OCO_EXPIRY_TIMES: _ClassVar[
             StopOrder.RejectionReason
         ]
-
     REJECTION_REASON_UNSPECIFIED: StopOrder.RejectionReason
     REJECTION_REASON_TRADING_NOT_ALLOWED: StopOrder.RejectionReason
     REJECTION_REASON_EXPIRY_IN_THE_PAST: StopOrder.RejectionReason
     REJECTION_REASON_MUST_BE_REDUCE_ONLY: StopOrder.RejectionReason
-    REJECTION_REASON_MAX_STOP_ORDERS_PER_PARTY_REACHED: (
-        StopOrder.RejectionReason
-    )
-    REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_WITHOUT_A_POSITION: (
-        StopOrder.RejectionReason
-    )
-    REJECTION_REASON_STOP_ORDER_NOT_CLOSING_THE_POSITION: (
-        StopOrder.RejectionReason
-    )
-    REJECTION_REASON_STOP_ORDER_LINKED_PERCENTAGE_INVALID: (
-        StopOrder.RejectionReason
-    )
-    REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_DURING_OPENING_AUCTION: (
-        StopOrder.RejectionReason
-    )
-    REJECTION_REASON_STOP_ORDER_CANNOT_MATCH_OCO_EXPIRY_TIMES: (
-        StopOrder.RejectionReason
-    )
+    REJECTION_REASON_MAX_STOP_ORDERS_PER_PARTY_REACHED: StopOrder.RejectionReason
+    REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_WITHOUT_A_POSITION: StopOrder.RejectionReason
+    REJECTION_REASON_STOP_ORDER_NOT_CLOSING_THE_POSITION: StopOrder.RejectionReason
+    REJECTION_REASON_STOP_ORDER_LINKED_PERCENTAGE_INVALID: StopOrder.RejectionReason
+    REJECTION_REASON_STOP_ORDER_NOT_ALLOWED_DURING_OPENING_AUCTION: StopOrder.RejectionReason
+    REJECTION_REASON_STOP_ORDER_CANNOT_MATCH_OCO_EXPIRY_TIMES: StopOrder.RejectionReason
 
     class SizeOverrideValue(_message.Message):
         __slots__ = ("percentage",)
         PERCENTAGE_FIELD_NUMBER: _ClassVar[int]
         percentage: str
         def __init__(self, percentage: _Optional[str] = ...) -> None: ...
-
     ID_FIELD_NUMBER: _ClassVar[int]
     OCO_LINK_ID_FIELD_NUMBER: _ClassVar[int]
     EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
@@ -768,7 +752,6 @@ class Order(_message.Message):
         TIME_IN_FORCE_FOK: _ClassVar[Order.TimeInForce]
         TIME_IN_FORCE_GFA: _ClassVar[Order.TimeInForce]
         TIME_IN_FORCE_GFN: _ClassVar[Order.TimeInForce]
-
     TIME_IN_FORCE_UNSPECIFIED: Order.TimeInForce
     TIME_IN_FORCE_GTC: Order.TimeInForce
     TIME_IN_FORCE_GTT: Order.TimeInForce
@@ -783,7 +766,6 @@ class Order(_message.Message):
         TYPE_LIMIT: _ClassVar[Order.Type]
         TYPE_MARKET: _ClassVar[Order.Type]
         TYPE_NETWORK: _ClassVar[Order.Type]
-
     TYPE_UNSPECIFIED: Order.Type
     TYPE_LIMIT: Order.Type
     TYPE_MARKET: Order.Type
@@ -800,7 +782,6 @@ class Order(_message.Message):
         STATUS_REJECTED: _ClassVar[Order.Status]
         STATUS_PARTIALLY_FILLED: _ClassVar[Order.Status]
         STATUS_PARKED: _ClassVar[Order.Status]
-
     STATUS_UNSPECIFIED: Order.Status
     STATUS_ACTIVE: Order.Status
     STATUS_EXPIRED: Order.Status
@@ -958,7 +939,6 @@ class Trade(_message.Message):
         TYPE_DEFAULT: _ClassVar[Trade.Type]
         TYPE_NETWORK_CLOSE_OUT_GOOD: _ClassVar[Trade.Type]
         TYPE_NETWORK_CLOSE_OUT_BAD: _ClassVar[Trade.Type]
-
     TYPE_UNSPECIFIED: Trade.Type
     TYPE_DEFAULT: Trade.Type
     TYPE_NETWORK_CLOSE_OUT_GOOD: Trade.Type
@@ -1240,7 +1220,6 @@ class Deposit(_message.Message):
         STATUS_OPEN: _ClassVar[Deposit.Status]
         STATUS_CANCELLED: _ClassVar[Deposit.Status]
         STATUS_FINALIZED: _ClassVar[Deposit.Status]
-
     STATUS_UNSPECIFIED: Deposit.Status
     STATUS_OPEN: Deposit.Status
     STATUS_CANCELLED: Deposit.Status
@@ -1293,7 +1272,6 @@ class Withdrawal(_message.Message):
         STATUS_OPEN: _ClassVar[Withdrawal.Status]
         STATUS_REJECTED: _ClassVar[Withdrawal.Status]
         STATUS_FINALIZED: _ClassVar[Withdrawal.Status]
-
     STATUS_UNSPECIFIED: Withdrawal.Status
     STATUS_OPEN: Withdrawal.Status
     STATUS_REJECTED: Withdrawal.Status
@@ -1416,6 +1394,7 @@ class DispatchStrategy(_message.Message):
         "lock_period",
         "distribution_strategy",
         "rank_table",
+        "cap_reward_fee_multiple",
     )
     ASSET_FOR_METRIC_FIELD_NUMBER: _ClassVar[int]
     METRIC_FIELD_NUMBER: _ClassVar[int]
@@ -1425,13 +1404,14 @@ class DispatchStrategy(_message.Message):
     TEAM_SCOPE_FIELD_NUMBER: _ClassVar[int]
     N_TOP_PERFORMERS_FIELD_NUMBER: _ClassVar[int]
     STAKING_REQUIREMENT_FIELD_NUMBER: _ClassVar[int]
-    NOTIONAL_TIME_WEIGHTED_AVERAGE_POSITION_REQUIREMENT_FIELD_NUMBER: (
-        _ClassVar[int]
-    )
+    NOTIONAL_TIME_WEIGHTED_AVERAGE_POSITION_REQUIREMENT_FIELD_NUMBER: _ClassVar[
+        int
+    ]
     WINDOW_LENGTH_FIELD_NUMBER: _ClassVar[int]
     LOCK_PERIOD_FIELD_NUMBER: _ClassVar[int]
     DISTRIBUTION_STRATEGY_FIELD_NUMBER: _ClassVar[int]
     RANK_TABLE_FIELD_NUMBER: _ClassVar[int]
+    CAP_REWARD_FEE_MULTIPLE_FIELD_NUMBER: _ClassVar[int]
     asset_for_metric: str
     metric: DispatchMetric
     markets: _containers.RepeatedScalarFieldContainer[str]
@@ -1445,6 +1425,7 @@ class DispatchStrategy(_message.Message):
     lock_period: int
     distribution_strategy: DistributionStrategy
     rank_table: _containers.RepeatedCompositeFieldContainer[Rank]
+    cap_reward_fee_multiple: str
     def __init__(
         self,
         asset_for_metric: _Optional[str] = ...,
@@ -1464,6 +1445,7 @@ class DispatchStrategy(_message.Message):
             _Union[DistributionStrategy, str]
         ] = ...,
         rank_table: _Optional[_Iterable[_Union[Rank, _Mapping]]] = ...,
+        cap_reward_fee_multiple: _Optional[str] = ...,
     ) -> None: ...
 
 class Rank(_message.Message):
@@ -2116,7 +2098,6 @@ class LiquidityProvision(_message.Message):
         STATUS_REJECTED: _ClassVar[LiquidityProvision.Status]
         STATUS_UNDEPLOYED: _ClassVar[LiquidityProvision.Status]
         STATUS_PENDING: _ClassVar[LiquidityProvision.Status]
-
     STATUS_UNSPECIFIED: LiquidityProvision.Status
     STATUS_ACTIVE: LiquidityProvision.Status
     STATUS_STOPPED: LiquidityProvision.Status
