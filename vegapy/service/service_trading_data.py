@@ -75,7 +75,6 @@ class TradingDataService:
         network: Network,
         network_config: Optional[Path] = None,
     ):
-
         if network is Network.NETWORK_LOCAL:
             if network_config is None:
                 raise ValueError(

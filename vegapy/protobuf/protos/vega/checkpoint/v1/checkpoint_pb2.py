@@ -32,7 +32,9 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals["DESCRIPTOR"]._serialized_options = (
+    _globals[
+        "DESCRIPTOR"
+    ]._serialized_options = (
         b"Z3code.vegaprotocol.io/vega/protos/vega/checkpoint/v1"
     )
     _globals["_CHECKPOINTSTATE"]._serialized_start = 192

@@ -28,9 +28,9 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals["DESCRIPTOR"]._serialized_options = (
-        b"Z%code.vegaprotocol.io/vega/protos/vega"
-    )
+    _globals[
+        "DESCRIPTOR"
+    ]._serialized_options = b"Z%code.vegaprotocol.io/vega/protos/vega"
     _globals["_ORACLESPEC"]._serialized_start = 76
     _globals["_ORACLESPEC"]._serialized_end = 177
     _globals["_ORACLEDATA"]._serialized_start = 179

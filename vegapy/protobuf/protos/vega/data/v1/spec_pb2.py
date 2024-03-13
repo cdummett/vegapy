@@ -24,9 +24,9 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals["DESCRIPTOR"]._serialized_options = (
-        b"Z-code.vegaprotocol.io/vega/protos/vega/data/v1"
-    )
+    _globals[
+        "DESCRIPTOR"
+    ]._serialized_options = b"Z-code.vegaprotocol.io/vega/protos/vega/data/v1"
     _globals["_FILTER"]._serialized_start = 41
     _globals["_FILTER"]._serialized_end = 151
     _globals["_PROPERTYKEY"]._serialized_start = 154

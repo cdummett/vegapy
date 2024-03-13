@@ -11,7 +11,6 @@ from vegapy.service.networks.constants import Network
 from scripts.parser import PARSER
 
 if __name__ == "__main__":
-
     # Enrich parser with script specific options
     plotting = PARSER.add_argument_group("Plotting options")
     plotting.add_argument(
@@ -114,7 +113,6 @@ if __name__ == "__main__":
                 end_timestamp=end_timestamp,
             )
         )
-
 
     # Build figures and optionally save or show
     if args.save:

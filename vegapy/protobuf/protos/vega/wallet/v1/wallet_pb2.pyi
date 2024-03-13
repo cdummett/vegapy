@@ -98,9 +98,7 @@ class SubmitTransactionRequest(_message.Message):
     liquidity_provision_submission: _commands_pb2.LiquidityProvisionSubmission
     delegate_submission: _commands_pb2.DelegateSubmission
     undelegate_submission: _commands_pb2.UndelegateSubmission
-    liquidity_provision_cancellation: (
-        _commands_pb2.LiquidityProvisionCancellation
-    )
+    liquidity_provision_cancellation: _commands_pb2.LiquidityProvisionCancellation
     liquidity_provision_amendment: _commands_pb2.LiquidityProvisionAmendment
     transfer: _commands_pb2.Transfer
     cancel_transfer: _commands_pb2.CancelTransfer
@@ -121,9 +119,7 @@ class SubmitTransactionRequest(_message.Message):
     key_rotate_submission: _validator_commands_pb2.KeyRotateSubmission
     state_variable_proposal: _validator_commands_pb2.StateVariableProposal
     validator_heartbeat: _validator_commands_pb2.ValidatorHeartbeat
-    ethereum_key_rotate_submission: (
-        _validator_commands_pb2.EthereumKeyRotateSubmission
-    )
+    ethereum_key_rotate_submission: _validator_commands_pb2.EthereumKeyRotateSubmission
     protocol_upgrade_proposal: _validator_commands_pb2.ProtocolUpgradeProposal
     issue_signatures: _commands_pb2.IssueSignatures
     oracle_data_submission: _data_pb2.OracleDataSubmission

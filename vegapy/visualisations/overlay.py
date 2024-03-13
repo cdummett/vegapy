@@ -532,7 +532,6 @@ def overlay_network_liquidations(
     trades: List[protos.vega.vega.Trade],
     size_decimals: int,
 ):
-
     x_long = []
     y_long = []
     x_short = []
@@ -541,7 +540,6 @@ def overlay_network_liquidations(
     last_timestamp_long = None
     last_timestamp_short = None
     for trade in trades:
-
         if (
             trade.type
             != protos.vega.vega.Trade.Type.TYPE_NETWORK_CLOSE_OUT_BAD
