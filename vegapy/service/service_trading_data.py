@@ -454,17 +454,36 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def list_candle_data(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_candle_data(
+        self,
+        candle_id: str,
+        from_timestamp: Optional[int] = None,
+        to_timestamp: Optional[int] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[trading_data.Candle]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListCandleDataRequest(
+                candle_id=candle_id,
+                from_timestamp=from_timestamp,
+                to_timestamp=to_timestamp,
+            ),
+            request_func=lambda x: self.__stub.ListCandleData(x).candles,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
 
     # def observe_candle_data(self, max_pages: Optional[int] = None) -> Any:
     #     # TODO: Implement method
     #     pass
 
-    # def list_candle_intervals(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_candle_intervals(
+        self, market_id: str
+    ) -> List[trading_data.IntervalToCandleId]:
+        return self.__stub.ListCandleIntervals(
+            trading_data.ListCandleIntervalsRequest(market_id=market_id)
+        ).interval_to_candle_id
 
     # def list_votes(self, max_pages: Optional[int] = None) -> Any:
     #     # TODO: Implement method
