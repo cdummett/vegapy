@@ -38,9 +38,7 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals[
-        "DESCRIPTOR"
-    ]._serialized_options = (
+    _globals["DESCRIPTOR"]._serialized_options = (
         b"Z/code.vegaprotocol.io/vega/protos/vega/events/v1"
     )
     _globals["_PROTOCOLUPGRADEPROPOSALSTATUS"]._serialized_start = 27332

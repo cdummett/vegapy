@@ -618,6 +618,7 @@ class FundingPeriodDataPoint(_message.Message):
         SOURCE_UNSPECIFIED: _ClassVar[FundingPeriodDataPoint.Source]
         SOURCE_EXTERNAL: _ClassVar[FundingPeriodDataPoint.Source]
         SOURCE_INTERNAL: _ClassVar[FundingPeriodDataPoint.Source]
+
     SOURCE_UNSPECIFIED: FundingPeriodDataPoint.Source
     SOURCE_EXTERNAL: FundingPeriodDataPoint.Source
     SOURCE_INTERNAL: FundingPeriodDataPoint.Source
@@ -768,6 +769,7 @@ class Transfer(_message.Message):
         STATUS_REJECTED: _ClassVar[Transfer.Status]
         STATUS_STOPPED: _ClassVar[Transfer.Status]
         STATUS_CANCELLED: _ClassVar[Transfer.Status]
+
     STATUS_UNSPECIFIED: Transfer.Status
     STATUS_PENDING: Transfer.Status
     STATUS_DONE: Transfer.Status
@@ -899,6 +901,7 @@ class StakeLinking(_message.Message):
         TYPE_UNSPECIFIED: _ClassVar[StakeLinking.Type]
         TYPE_LINK: _ClassVar[StakeLinking.Type]
         TYPE_UNLINK: _ClassVar[StakeLinking.Type]
+
     TYPE_UNSPECIFIED: StakeLinking.Type
     TYPE_LINK: StakeLinking.Type
     TYPE_UNLINK: StakeLinking.Type
@@ -909,6 +912,7 @@ class StakeLinking(_message.Message):
         STATUS_PENDING: _ClassVar[StakeLinking.Status]
         STATUS_ACCEPTED: _ClassVar[StakeLinking.Status]
         STATUS_REJECTED: _ClassVar[StakeLinking.Status]
+
     STATUS_UNSPECIFIED: StakeLinking.Status
     STATUS_PENDING: StakeLinking.Status
     STATUS_ACCEPTED: StakeLinking.Status
@@ -970,6 +974,7 @@ class ERC20MultiSigSignerEvent(_message.Message):
         TYPE_UNSPECIFIED: _ClassVar[ERC20MultiSigSignerEvent.Type]
         TYPE_ADDED: _ClassVar[ERC20MultiSigSignerEvent.Type]
         TYPE_REMOVED: _ClassVar[ERC20MultiSigSignerEvent.Type]
+
     TYPE_UNSPECIFIED: ERC20MultiSigSignerEvent.Type
     TYPE_ADDED: ERC20MultiSigSignerEvent.Type
     TYPE_REMOVED: ERC20MultiSigSignerEvent.Type
@@ -1254,6 +1259,7 @@ class TransactionResult(_message.Message):
         ERROR_FIELD_NUMBER: _ClassVar[int]
         error: str
         def __init__(self, error: _Optional[str] = ...) -> None: ...
+
     PARTY_ID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     HASH_FIELD_NUMBER: _ClassVar[int]
@@ -1300,7 +1306,9 @@ class TransactionResult(_message.Message):
     withdraw_submission: _commands_pb2.WithdrawSubmission
     delegate_submission: _commands_pb2.DelegateSubmission
     undelegate_submission: _commands_pb2.UndelegateSubmission
-    liquidity_provision_cancellation: _commands_pb2.LiquidityProvisionCancellation
+    liquidity_provision_cancellation: (
+        _commands_pb2.LiquidityProvisionCancellation
+    )
     liquidity_provision_amendment: _commands_pb2.LiquidityProvisionAmendment
     transfer: _commands_pb2.Transfer
     cancel_transfer: _commands_pb2.CancelTransfer
@@ -1310,7 +1318,9 @@ class TransactionResult(_message.Message):
     issue_signatures: _commands_pb2.IssueSignatures
     batch_market_instructions: _commands_pb2.BatchMarketInstructions
     key_rotate_submission: _validator_commands_pb2.KeyRotateSubmission
-    ethereum_key_rotate_submission: _validator_commands_pb2.EthereumKeyRotateSubmission
+    ethereum_key_rotate_submission: (
+        _validator_commands_pb2.EthereumKeyRotateSubmission
+    )
     stop_order_submission: _commands_pb2.StopOrdersSubmission
     stop_order_cancellation: _commands_pb2.StopOrdersCancellation
     create_referral_set: _commands_pb2.CreateReferralSet
@@ -1474,7 +1484,9 @@ class TxErrorEvent(_message.Message):
     withdraw_submission: _commands_pb2.WithdrawSubmission
     delegate_submission: _commands_pb2.DelegateSubmission
     undelegate_submission: _commands_pb2.UndelegateSubmission
-    liquidity_provision_cancellation: _commands_pb2.LiquidityProvisionCancellation
+    liquidity_provision_cancellation: (
+        _commands_pb2.LiquidityProvisionCancellation
+    )
     liquidity_provision_amendment: _commands_pb2.LiquidityProvisionAmendment
     transfer: _commands_pb2.Transfer
     cancel_transfer: _commands_pb2.CancelTransfer
@@ -2748,7 +2760,9 @@ class BusEvent(_message.Message):
     party_margin_mode_updated: PartyMarginModeUpdated
     party_profile_updated: PartyProfileUpdated
     teams_stats_updated: TeamsStatsUpdated
-    time_weighted_notional_position_updated: TimeWeightedNotionalPositionUpdated
+    time_weighted_notional_position_updated: (
+        TimeWeightedNotionalPositionUpdated
+    )
     market: MarketEvent
     tx_err_event: TxErrorEvent
     version: int

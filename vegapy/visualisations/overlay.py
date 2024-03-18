@@ -1,8 +1,9 @@
 import datetime
 import numpy as np
+import pandas as pd
 import vegapy.protobuf.protos as protos
 
-from typing import List, Optional
+from typing import List, Optional, Callable, Any
 from matplotlib.axes import Axes
 from collections import defaultdict
 from vegapy.utils import (
@@ -738,4 +739,39 @@ def overlay_funding_period_data_points(
             alpha=0.5,
             label="external_data_points",
             where="post",
+        )
+
+
+def overlay_stacked_rewards(
+    ax: Axes,
+    rewards: List[protos.vega.vega.Reward],
+    asset_decimal: int,
+    reward_type_filter: protos.vega.vega.AccountType,
+    cumulative: bool = False,
+    **kwargs,
+):
+    data = defaultdict(lambda: defaultdict(float))
+
+    for reward in rewards:
+        if reward.reward_type != protos.vega.vega.AccountType.Name(
+            reward_type_filter
+        ):
+            continue
+        data[reward.epoch][reward.party_id] += padded_int_to_float(
+            reward.amount, asset_decimal
+        )
+    df = pd.DataFrame.from_dict(data, orient="index").sort_index()
+    ax.stackplot(
+        df.index,
+        df.values.T.cumsum(axis=1) if cumulative else df.values.T,
+        step="post",
+        labels=[party_id[:7] for party_id in df.columns],
+        **kwargs,
+    )
+    for epoch in df.index:
+        ax.axvline(
+            epoch,
+            alpha=0.25,
+            linewidth=0.5,
+            color="k",
         )

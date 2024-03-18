@@ -2743,13 +2743,13 @@ class Topology(_message.Message):
         PendingKeyRotation
     ]
     validator_performance: ValidatorPerformance
-    pending_ethereum_key_rotations: _containers.RepeatedCompositeFieldContainer[
-        PendingEthereumKeyRotation
-    ]
+    pending_ethereum_key_rotations: (
+        _containers.RepeatedCompositeFieldContainer[PendingEthereumKeyRotation]
+    )
     signatures: ToplogySignatures
-    unsolved_ethereum_key_rotations: _containers.RepeatedCompositeFieldContainer[
-        PendingEthereumKeyRotation
-    ]
+    unsolved_ethereum_key_rotations: (
+        _containers.RepeatedCompositeFieldContainer[PendingEthereumKeyRotation]
+    )
     def __init__(
         self,
         validator_data: _Optional[
@@ -3361,9 +3361,11 @@ class MarketTracker(_message.Message):
     taker_notional_volume: _containers.RepeatedCompositeFieldContainer[
         _checkpoint_pb2.TakerNotionalVolume
     ]
-    market_to_party_taker_notional_volume: _containers.RepeatedCompositeFieldContainer[
-        _checkpoint_pb2.MarketToPartyTakerNotionalVolume
-    ]
+    market_to_party_taker_notional_volume: (
+        _containers.RepeatedCompositeFieldContainer[
+            _checkpoint_pb2.MarketToPartyTakerNotionalVolume
+        ]
+    )
     def __init__(
         self,
         market_activity: _Optional[

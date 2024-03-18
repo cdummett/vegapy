@@ -195,7 +195,9 @@ class FutureProduct(_message.Message):
     settlement_asset: str
     quote_name: str
     data_source_spec_for_settlement_data: _data_source_pb2.DataSourceDefinition
-    data_source_spec_for_trading_termination: _data_source_pb2.DataSourceDefinition
+    data_source_spec_for_trading_termination: (
+        _data_source_pb2.DataSourceDefinition
+    )
     data_source_spec_binding: _markets_pb2.DataSourceSpecToFutureBinding
     def __init__(
         self,
@@ -247,13 +249,17 @@ class PerpetualProduct(_message.Message):
     interest_rate: str
     clamp_lower_bound: str
     clamp_upper_bound: str
-    data_source_spec_for_settlement_schedule: _data_source_pb2.DataSourceDefinition
+    data_source_spec_for_settlement_schedule: (
+        _data_source_pb2.DataSourceDefinition
+    )
     data_source_spec_for_settlement_data: _data_source_pb2.DataSourceDefinition
     data_source_spec_binding: _markets_pb2.DataSourceSpecToPerpetualBinding
     funding_rate_scaling_factor: str
     funding_rate_lower_bound: str
     funding_rate_upper_bound: str
-    internal_composite_price_configuration: _markets_pb2.CompositePriceConfiguration
+    internal_composite_price_configuration: (
+        _markets_pb2.CompositePriceConfiguration
+    )
     def __init__(
         self,
         settlement_asset: _Optional[str] = ...,
@@ -673,7 +679,9 @@ class UpdateFutureProduct(_message.Message):
     DATA_SOURCE_SPEC_BINDING_FIELD_NUMBER: _ClassVar[int]
     quote_name: str
     data_source_spec_for_settlement_data: _data_source_pb2.DataSourceDefinition
-    data_source_spec_for_trading_termination: _data_source_pb2.DataSourceDefinition
+    data_source_spec_for_trading_termination: (
+        _data_source_pb2.DataSourceDefinition
+    )
     data_source_spec_binding: _markets_pb2.DataSourceSpecToFutureBinding
     def __init__(
         self,
@@ -721,13 +729,17 @@ class UpdatePerpetualProduct(_message.Message):
     interest_rate: str
     clamp_lower_bound: str
     clamp_upper_bound: str
-    data_source_spec_for_settlement_schedule: _data_source_pb2.DataSourceDefinition
+    data_source_spec_for_settlement_schedule: (
+        _data_source_pb2.DataSourceDefinition
+    )
     data_source_spec_for_settlement_data: _data_source_pb2.DataSourceDefinition
     data_source_spec_binding: _markets_pb2.DataSourceSpecToPerpetualBinding
     funding_rate_scaling_factor: str
     funding_rate_lower_bound: str
     funding_rate_upper_bound: str
-    internal_composite_price_configuration: _markets_pb2.CompositePriceConfiguration
+    internal_composite_price_configuration: (
+        _markets_pb2.CompositePriceConfiguration
+    )
     def __init__(
         self,
         quote_name: _Optional[str] = ...,
@@ -1033,6 +1045,7 @@ class GovernanceData(_message.Message):
         __slots__ = ()
         TYPE_SINGLE_OR_UNSPECIFIED: _ClassVar[GovernanceData.Type]
         TYPE_BATCH: _ClassVar[GovernanceData.Type]
+
     TYPE_SINGLE_OR_UNSPECIFIED: GovernanceData.Type
     TYPE_BATCH: GovernanceData.Type
 
@@ -1059,6 +1072,7 @@ class GovernanceData(_message.Message):
             key: _Optional[str] = ...,
             value: _Optional[_Union[Vote, _Mapping]] = ...,
         ) -> None: ...
+
     PROPOSAL_FIELD_NUMBER: _ClassVar[int]
     YES_FIELD_NUMBER: _ClassVar[int]
     NO_FIELD_NUMBER: _ClassVar[int]
@@ -1113,6 +1127,7 @@ class Proposal(_message.Message):
         STATE_DECLINED: _ClassVar[Proposal.State]
         STATE_ENACTED: _ClassVar[Proposal.State]
         STATE_WAITING_FOR_NODE_VOTE: _ClassVar[Proposal.State]
+
     STATE_UNSPECIFIED: Proposal.State
     STATE_FAILED: Proposal.State
     STATE_OPEN: Proposal.State
@@ -1187,6 +1202,7 @@ class Vote(_message.Message):
         VALUE_UNSPECIFIED: _ClassVar[Vote.Value]
         VALUE_NO: _ClassVar[Vote.Value]
         VALUE_YES: _ClassVar[Vote.Value]
+
     VALUE_UNSPECIFIED: Vote.Value
     VALUE_NO: Vote.Value
     VALUE_YES: Vote.Value
