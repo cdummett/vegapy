@@ -616,9 +616,30 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def list_rewards(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_rewards(
+        self,
+        party_id: Optional[str] = None,
+        asset_id: Optional[str] = None,
+        from_epoch: Optional[int] = None,
+        to_epoch: Optional[int] = None,
+        team_id: Optional[str] = None,
+        game_id: Optional[str] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[protos.vega.vega.Reward]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListRewardsRequest(
+                party_id=party_id,
+                asset_id=asset_id,
+                from_epoch=from_epoch,
+                to_epoch=to_epoch,
+                team_id=team_id,
+                game_id=game_id,
+            ),
+            request_func=lambda x: self.__stub.ListRewards(x).rewards,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
 
     # def list_reward_summaries(self, max_pages: Optional[int] = None) -> Any:
     #     # TODO: Implement method
