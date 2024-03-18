@@ -645,11 +645,30 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def list_epoch_reward_summaries(
-    #     self, max_pages: Optional[int] = None
-    # ) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_epoch_reward_summaries(
+        self,
+        asset_ids: List[str] = None,
+        market_ids: List[str] = None,
+        from_epoch: Optional[int] = None,
+        to_epoch: Optional[int] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[protos.vega.vega.EpochRewardSummary]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListEpochRewardSummariesRequest(
+                filter=trading_data.RewardSummaryFilter(
+                    asset_ids=asset_ids,
+                    market_ids=market_ids,
+                    from_epoch=from_epoch,
+                    to_epoch=to_epoch,
+                )
+            ),
+            request_func=lambda x: self.__stub.ListEpochRewardSummaries(
+                x
+            ).summaries,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
 
     # def get_deposit(self, max_pages: Optional[int] = None) -> Any:
     #     # TODO: Implement method
