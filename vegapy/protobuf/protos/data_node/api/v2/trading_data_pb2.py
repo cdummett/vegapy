@@ -44,9 +44,9 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals[
-        "DESCRIPTOR"
-    ]._serialized_options = b'Z1code.vegaprotocol.io/vega/protos/data-node/api/v2\222A\223\001\022"\n\023Vega data node APIs2\013v0.75.0-dev\032\034https://api.testnet.vega.xyz*\002\001\0022\020application/jsonR9\n\003500\0222\n\030An internal server error\022\026\n\024\032\022.google.rpc.Status'
+    _globals["DESCRIPTOR"]._serialized_options = (
+        b'Z1code.vegaprotocol.io/vega/protos/data-node/api/v2\222A\223\001\022"\n\023Vega data node APIs2\013v0.75.0-dev\032\034https://api.testnet.vega.xyz*\002\001\0022\020application/jsonR9\n\003500\0222\n\030An internal server error\022\026\n\024\032\022.google.rpc.Status'
+    )
     _globals["_GETPARTYVESTINGSTATSREQUEST"].fields_by_name[
         "party_id"
     ]._options = None
@@ -1276,9 +1276,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals[
         "_LISTERC20MULTISIGSIGNERADDEDBUNDLESREQUEST"
     ]._serialized_start = 14666
-    _globals[
-        "_LISTERC20MULTISIGSIGNERADDEDBUNDLESREQUEST"
-    ]._serialized_end = 14855
+    _globals["_LISTERC20MULTISIGSIGNERADDEDBUNDLESREQUEST"]._serialized_end = (
+        14855
+    )
     _globals[
         "_LISTERC20MULTISIGSIGNERADDEDBUNDLESRESPONSE"
     ]._serialized_start = 14857
@@ -1497,12 +1497,12 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_LIQUIDITYPROVISIONWITHPENDINGEDGE"]._serialized_end = 27138
     _globals["_LIQUIDITYPROVISIONSCONNECTION"]._serialized_start = 27141
     _globals["_LIQUIDITYPROVISIONSCONNECTION"]._serialized_end = 27292
-    _globals[
-        "_LIQUIDITYPROVISIONSWITHPENDINGCONNECTION"
-    ]._serialized_start = 27295
-    _globals[
-        "_LIQUIDITYPROVISIONSWITHPENDINGCONNECTION"
-    ]._serialized_end = 27467
+    _globals["_LIQUIDITYPROVISIONSWITHPENDINGCONNECTION"]._serialized_start = (
+        27295
+    )
+    _globals["_LIQUIDITYPROVISIONSWITHPENDINGCONNECTION"]._serialized_end = (
+        27467
+    )
     _globals["_OBSERVELIQUIDITYPROVISIONSREQUEST"]._serialized_start = 27470
     _globals["_OBSERVELIQUIDITYPROVISIONSREQUEST"]._serialized_end = 27598
     _globals["_OBSERVELIQUIDITYPROVISIONSRESPONSE"]._serialized_start = 27600
@@ -1682,20 +1682,20 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals[
         "_GETMOSTRECENTNETWORKHISTORYSEGMENTREQUEST"
     ]._serialized_start = 38351
-    _globals[
-        "_GETMOSTRECENTNETWORKHISTORYSEGMENTREQUEST"
-    ]._serialized_end = 38394
+    _globals["_GETMOSTRECENTNETWORKHISTORYSEGMENTREQUEST"]._serialized_end = (
+        38394
+    )
     _globals[
         "_GETMOSTRECENTNETWORKHISTORYSEGMENTRESPONSE"
     ]._serialized_start = 38397
-    _globals[
-        "_GETMOSTRECENTNETWORKHISTORYSEGMENTRESPONSE"
-    ]._serialized_end = 38538
+    _globals["_GETMOSTRECENTNETWORKHISTORYSEGMENTRESPONSE"]._serialized_end = (
+        38538
+    )
     _globals["_LISTALLNETWORKHISTORYSEGMENTSREQUEST"]._serialized_start = 38540
     _globals["_LISTALLNETWORKHISTORYSEGMENTSREQUEST"]._serialized_end = 38578
-    _globals[
-        "_LISTALLNETWORKHISTORYSEGMENTSRESPONSE"
-    ]._serialized_start = 38580
+    _globals["_LISTALLNETWORKHISTORYSEGMENTSRESPONSE"]._serialized_start = (
+        38580
+    )
     _globals["_LISTALLNETWORKHISTORYSEGMENTSRESPONSE"]._serialized_end = 38680
     _globals[
         "_GETACTIVENETWORKHISTORYPEERADDRESSESREQUEST"
@@ -1713,16 +1713,16 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_GETNETWORKHISTORYSTATUSREQUEST"]._serialized_end = 38844
     _globals["_GETNETWORKHISTORYSTATUSRESPONSE"]._serialized_start = 38847
     _globals["_GETNETWORKHISTORYSTATUSRESPONSE"]._serialized_end = 39023
-    _globals[
-        "_GETNETWORKHISTORYBOOTSTRAPPEERSREQUEST"
-    ]._serialized_start = 39025
+    _globals["_GETNETWORKHISTORYBOOTSTRAPPEERSREQUEST"]._serialized_start = (
+        39025
+    )
     _globals["_GETNETWORKHISTORYBOOTSTRAPPEERSREQUEST"]._serialized_end = 39065
-    _globals[
-        "_GETNETWORKHISTORYBOOTSTRAPPEERSRESPONSE"
-    ]._serialized_start = 39067
-    _globals[
-        "_GETNETWORKHISTORYBOOTSTRAPPEERSRESPONSE"
-    ]._serialized_end = 39149
+    _globals["_GETNETWORKHISTORYBOOTSTRAPPEERSRESPONSE"]._serialized_start = (
+        39067
+    )
+    _globals["_GETNETWORKHISTORYBOOTSTRAPPEERSRESPONSE"]._serialized_end = (
+        39149
+    )
     _globals["_EXPORTNETWORKHISTORYREQUEST"]._serialized_start = 39152
     _globals["_EXPORTNETWORKHISTORYREQUEST"]._serialized_end = 39285
     _globals["_LISTENTITIESREQUEST"]._serialized_start = 39287
@@ -1875,16 +1875,16 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_GETFEESSTATSFORPARTYREQUEST"]._serialized_end = 53372
     _globals["_GETFEESSTATSFORPARTYRESPONSE"]._serialized_start = 53374
     _globals["_GETFEESSTATSFORPARTYRESPONSE"]._serialized_end = 53489
-    _globals[
-        "_GETCURRENTVOLUMEDISCOUNTPROGRAMREQUEST"
-    ]._serialized_start = 53491
+    _globals["_GETCURRENTVOLUMEDISCOUNTPROGRAMREQUEST"]._serialized_start = (
+        53491
+    )
     _globals["_GETCURRENTVOLUMEDISCOUNTPROGRAMREQUEST"]._serialized_end = 53531
-    _globals[
-        "_GETCURRENTVOLUMEDISCOUNTPROGRAMRESPONSE"
-    ]._serialized_start = 53534
-    _globals[
-        "_GETCURRENTVOLUMEDISCOUNTPROGRAMRESPONSE"
-    ]._serialized_end = 53686
+    _globals["_GETCURRENTVOLUMEDISCOUNTPROGRAMRESPONSE"]._serialized_start = (
+        53534
+    )
+    _globals["_GETCURRENTVOLUMEDISCOUNTPROGRAMRESPONSE"]._serialized_end = (
+        53686
+    )
     _globals["_GETVOLUMEDISCOUNTSTATSREQUEST"]._serialized_start = 53689
     _globals["_GETVOLUMEDISCOUNTSTATSREQUEST"]._serialized_end = 53891
     _globals["_GETVOLUMEDISCOUNTSTATSRESPONSE"]._serialized_start = 53893
@@ -1943,16 +1943,16 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_PARTYMARGINMODE"]._serialized_end = 58673
     _globals["_TIMEWEIGHTEDNOTIONALPOSITION"]._serialized_start = 58676
     _globals["_TIMEWEIGHTEDNOTIONALPOSITION"]._serialized_end = 58918
-    _globals[
-        "_GETTIMEWEIGHTEDNOTIONALPOSITIONREQUEST"
-    ]._serialized_start = 58921
+    _globals["_GETTIMEWEIGHTEDNOTIONALPOSITIONREQUEST"]._serialized_start = (
+        58921
+    )
     _globals["_GETTIMEWEIGHTEDNOTIONALPOSITIONREQUEST"]._serialized_end = 59085
-    _globals[
-        "_GETTIMEWEIGHTEDNOTIONALPOSITIONRESPONSE"
-    ]._serialized_start = 59088
-    _globals[
-        "_GETTIMEWEIGHTEDNOTIONALPOSITIONRESPONSE"
-    ]._serialized_end = 59247
+    _globals["_GETTIMEWEIGHTEDNOTIONALPOSITIONRESPONSE"]._serialized_start = (
+        59088
+    )
+    _globals["_GETTIMEWEIGHTEDNOTIONALPOSITIONRESPONSE"]._serialized_end = (
+        59247
+    )
     _globals["_TRADINGDATASERVICE"]._serialized_start = 60131
     _globals["_TRADINGDATASERVICE"]._serialized_end = 75445
 # @@protoc_insertion_point(module_scope)

@@ -1212,6 +1212,7 @@ class ListTransfersRequest(_message.Message):
         SCOPE_UNSPECIFIED: _ClassVar[ListTransfersRequest.Scope]
         SCOPE_INDIVIDUAL: _ClassVar[ListTransfersRequest.Scope]
         SCOPE_TEAM: _ClassVar[ListTransfersRequest.Scope]
+
     SCOPE_UNSPECIFIED: ListTransfersRequest.Scope
     SCOPE_INDIVIDUAL: ListTransfersRequest.Scope
     SCOPE_TEAM: ListTransfersRequest.Scope
@@ -3053,6 +3054,7 @@ class ListGovernanceDataRequest(_message.Message):
         TYPE_UPDATE_VOLUME_DISCOUNT_PROGRAM: _ClassVar[
             ListGovernanceDataRequest.Type
         ]
+
     TYPE_UNSPECIFIED: ListGovernanceDataRequest.Type
     TYPE_ALL: ListGovernanceDataRequest.Type
     TYPE_NEW_MARKET: ListGovernanceDataRequest.Type
@@ -4115,12 +4117,16 @@ class ListEntitiesResponse(_message.Message):
         _events_pb2.Transfer
     ]
     votes: _containers.RepeatedCompositeFieldContainer[_governance_pb2.Vote]
-    erc20_multi_sig_signer_added_bundles: _containers.RepeatedCompositeFieldContainer[
-        ERC20MultiSigSignerAddedBundle
-    ]
-    erc20_multi_sig_signer_removed_bundles: _containers.RepeatedCompositeFieldContainer[
-        ERC20MultiSigSignerRemovedBundle
-    ]
+    erc20_multi_sig_signer_added_bundles: (
+        _containers.RepeatedCompositeFieldContainer[
+            ERC20MultiSigSignerAddedBundle
+        ]
+    )
+    erc20_multi_sig_signer_removed_bundles: (
+        _containers.RepeatedCompositeFieldContainer[
+            ERC20MultiSigSignerRemovedBundle
+        ]
+    )
     trades: _containers.RepeatedCompositeFieldContainer[_vega_pb2.Trade]
     oracle_specs: _containers.RepeatedCompositeFieldContainer[
         _oracle_pb2.OracleSpec
@@ -4507,9 +4513,9 @@ class EstimatePositionRequest(_message.Message):
     ORDER_MARGIN_ACCOUNT_BALANCE_FIELD_NUMBER: _ClassVar[int]
     MARGIN_MODE_FIELD_NUMBER: _ClassVar[int]
     MARGIN_FACTOR_FIELD_NUMBER: _ClassVar[int]
-    INCLUDE_REQUIRED_POSITION_MARGIN_IN_AVAILABLE_COLLATERAL_FIELD_NUMBER: _ClassVar[
-        int
-    ]
+    INCLUDE_REQUIRED_POSITION_MARGIN_IN_AVAILABLE_COLLATERAL_FIELD_NUMBER: (
+        _ClassVar[int]
+    )
     SCALE_LIQUIDATION_PRICE_TO_MARKET_DECIMALS_FIELD_NUMBER: _ClassVar[int]
     market_id: str
     open_volume: int

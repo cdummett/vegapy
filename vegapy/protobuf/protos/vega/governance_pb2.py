@@ -30,9 +30,9 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals[
-        "DESCRIPTOR"
-    ]._serialized_options = b"Z%code.vegaprotocol.io/vega/protos/vega"
+    _globals["DESCRIPTOR"]._serialized_options = (
+        b"Z%code.vegaprotocol.io/vega/protos/vega"
+    )
     _globals["_NEWMARKETCONFIGURATION"].fields_by_name[
         "quadratic_slippage_factor"
     ]._options = None

@@ -52,6 +52,7 @@ def test_list_rewards_team_id(
     for reward in tds.list_rewards(max_pages=1, team_id=team_id):
         assert reward.team_id == team_id
 
+
 @pytest.mark.trading_data_service
 def test_list_rewards_team_id(
     tds: TradingDataService, rewards: List[protos.vega.vega.Reward]

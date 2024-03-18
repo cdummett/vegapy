@@ -31,9 +31,7 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals[
-        "DESCRIPTOR"
-    ]._serialized_options = (
+    _globals["DESCRIPTOR"]._serialized_options = (
         b"Z1code.vegaprotocol.io/vega/protos/vega/commands/v1"
     )
     _globals["_NODESIGNATUREKIND"]._serialized_start = 2491

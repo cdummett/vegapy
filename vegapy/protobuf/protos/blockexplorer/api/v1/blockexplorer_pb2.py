@@ -38,17 +38,17 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals[
-        "DESCRIPTOR"
-    ]._serialized_options = b"Z5code.vegaprotocol.io/vega/protos/blockexplorer/api/v1\222AB\022'\n\030Vega block explorer APIs2\013v0.75.0-dev\032\023lb.testnet.vega.xyz*\002\001\002"
+    _globals["DESCRIPTOR"]._serialized_options = (
+        b"Z5code.vegaprotocol.io/vega/protos/blockexplorer/api/v1\222AB\022'\n\030Vega block explorer APIs2\013v0.75.0-dev\032\023lb.testnet.vega.xyz*\002\001\002"
+    )
     _globals["_GETTRANSACTIONREQUEST"].fields_by_name["hash"]._options = None
     _globals["_GETTRANSACTIONREQUEST"].fields_by_name[
         "hash"
     ]._serialized_options = b"\342A\001\002"
     _globals["_LISTTRANSACTIONSREQUEST_FILTERSENTRY"]._options = None
-    _globals[
-        "_LISTTRANSACTIONSREQUEST_FILTERSENTRY"
-    ]._serialized_options = b"8\001"
+    _globals["_LISTTRANSACTIONSREQUEST_FILTERSENTRY"]._serialized_options = (
+        b"8\001"
+    )
     _globals["_INFOREQUEST"]._serialized_start = 217
     _globals["_INFOREQUEST"]._serialized_end = 230
     _globals["_INFORESPONSE"]._serialized_start = 232

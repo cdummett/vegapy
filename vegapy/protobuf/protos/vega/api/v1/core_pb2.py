@@ -37,9 +37,9 @@ _builder.BuildTopDescriptorsAndMessages(
 )
 if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["DESCRIPTOR"]._options = None
-    _globals[
-        "DESCRIPTOR"
-    ]._serialized_options = b"Z,code.vegaprotocol.io/vega/protos/vega/api/v1\222A8\022\035\n\016Vega core APIs2\013v0.75.0-dev\032\023lb.testnet.vega.xyz*\002\001\002"
+    _globals["DESCRIPTOR"]._serialized_options = (
+        b"Z,code.vegaprotocol.io/vega/protos/vega/api/v1\222A8\022\035\n\016Vega core APIs2\013v0.75.0-dev\032\023lb.testnet.vega.xyz*\002\001\002"
+    )
     _globals["_PROPAGATECHAINEVENTREQUEST"].fields_by_name[
         "event"
     ]._options = None
