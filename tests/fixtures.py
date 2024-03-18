@@ -68,6 +68,11 @@ def orders(tds: TradingDataService) -> List[protos.vega.vega.Order]:
 
 
 @fixture(scope="session")
+def rewards(tds: TradingDataService) -> List[protos.vega.vega.Reward]:
+    return tds.list_rewards(max_pages=1)
+
+
+@fixture(scope="session")
 def governance_data(
     tds: TradingDataService,
 ) -> List[protos.vega.governance.GovernanceData]:
