@@ -74,7 +74,22 @@ if __name__ == "__main__":
         else int(args.start_time.timestamp() * 1e9)
     )
     market = service.utils.market.find_market([args.market])
-    asset = service.utils.market.find_settlement_asset([args.market])
+    if (
+        market.tradable_instrument.instrument.spot
+        != protos.vega.markets.Spot()
+    ):
+        asset = service.utils.market.find_quote_asset([args.market])
+    if (
+        market.tradable_instrument.instrument.future
+        != protos.vega.markets.Future()
+    ):
+        asset = service.utils.market.find_settlement_asset([args.market])
+    if (
+        market.tradable_instrument.instrument.perpetual
+        != protos.vega.markets.Perpetual()
+    ):
+        asset = service.utils.market.find_settlement_asset([args.market])
+
     market_data_history = service.api.data.get_market_data_history_by_id(
         market_id=market.id,
         start_timestamp=start_timestamp,
