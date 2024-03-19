@@ -1,6 +1,3 @@
-"""_summary_
-"""
-
 from typing import List
 from pathlib import Path
 
@@ -8,11 +5,10 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-import vegapy.quant as quant
 from vegapy.service.service import Service
 import vegapy.protobuf.protos as protos
-from vegapy.visualisations.overlay import *
 from vegapy.utils import timestamp_to_datetime, duration_str_to_int
+from vegapy.visualisations.overlay import *
 
 from vegapy.service.networks.constants import Network
 
@@ -35,7 +31,7 @@ def __party_colors(party_ids: List[str]) -> Dict[str, str]:
     return party_colors
 
 
-def plot(
+def create(
     service: Service,
     market_code: str,
     party_ids: Optional[List[str]] = None,
@@ -181,7 +177,7 @@ if __name__ == "__main__":
         ),
     )
 
-    fig = plot(
+    fig = create(
         service,
         market_code=args.market,
         start_timestamp=(

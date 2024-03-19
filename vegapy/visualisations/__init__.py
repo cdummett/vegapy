@@ -1,3 +1,3 @@
-from . import overlay, plot
+from . import overlay, plot, plots
 
-__all__ = ["overlay", "plot"]
+__all__ = ["overlay", "plot", "plots"]
