@@ -31,6 +31,17 @@ class MarketUtils:
                 return market
         raise Exception(f"Matching market not found.")
 
+    def find_asset(self, substrings: List[str]) -> protos.vega.assets.Asset:
+        instrument = self.find_market(
+            substrings=substrings
+        ).tradable_instrument.instrument
+        if instrument.spot != protos.vega.markets.Spot():
+            return self.find_quote_asset(substrings)
+        if instrument.spot != protos.vega.markets.Future():
+            return self.find_settlement_asset(substrings)
+        if instrument.spot != protos.vega.markets.Perpetual():
+            return self.find_settlement_asset(substrings)
+
     def find_base_asset(
         self, substrings: List[str]
     ) -> protos.vega.assets.Asset:
