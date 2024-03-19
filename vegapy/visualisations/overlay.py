@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import vegapy.protobuf.protos as protos
 
-from typing import List, Optional, Callable, Any
+from typing import List, Optional, Callable, Any, Dict
 from matplotlib.axes import Axes
 from collections import defaultdict
 from vegapy.utils import (
@@ -390,6 +390,116 @@ def overlay_internal_composite_price(
             )
         )
     ax.step(x, y, label="internal_composite_price", where="post")
+
+
+def overlay_candles(
+    ax: Axes,
+    candles: List[protos.data_node.api.v2.trading_data.Candle],
+    price_decimals: int,
+    asset_decimals: int,
+    interval: Optional[int] = 60,
+):
+    ups = defaultdict(lambda: [])
+    downs = defaultdict(lambda: [])
+
+    append_dict = ups
+    for candle in candles:
+        o = padded_int_to_float(candle.open, price_decimals)
+        h = padded_int_to_float(candle.high, price_decimals)
+        l = padded_int_to_float(candle.low, price_decimals)
+        c = padded_int_to_float(candle.close, price_decimals)
+        v = padded_int_to_float(candle.volume, asset_decimals)
+        if c > o:
+            append_dict = ups
+        if c < o:
+            append_dict = downs
+        if c == o:
+            append_dict = append_dict
+        append_dict["xco"].append(
+            timestamp_to_datetime(candle.start, nano=True)
+        )
+        append_dict["xhl"].append(
+            timestamp_to_datetime(candle.start + interval * 1e9 / 2, nano=True)
+        )
+        append_dict["o"].append(o)
+        append_dict["l"].append(l)
+        append_dict["co"].append(c - o)
+        append_dict["hl"].append(h - l)
+        append_dict["v"].append(v)
+    ax.bar(
+        ups["xhl"],
+        ups["hl"],
+        bottom=ups["l"],
+        color="g",
+        width=interval / (24 * 60 * 60) / 50,
+        align="center",
+    )
+    ax.bar(
+        downs["xhl"],
+        downs["hl"],
+        bottom=downs["l"],
+        color="r",
+        width=interval / (24 * 60 * 60) / 50,
+        align="center",
+    )
+    ax.bar(
+        ups["xco"],
+        ups["co"],
+        bottom=ups["o"],
+        color="g",
+        width=interval / (24 * 60 * 60),
+        align="edge",
+    )
+    ax.bar(
+        downs["xco"],
+        downs["co"],
+        bottom=downs["o"],
+        color="r",
+        width=interval / (24 * 60 * 60),
+        align="edge",
+    )
+
+
+def overlay_candles_volume(
+    ax: Axes,
+    candles: List[protos.data_node.api.v2.trading_data.Candle],
+    asset_decimals: int,
+    interval: Optional[int] = 60,
+):
+    ups = defaultdict(lambda: [])
+    downs = defaultdict(lambda: [])
+
+    append_dict = ups
+    for candle in candles:
+        o = int(candle.open)
+        c = int(candle.close)
+        v = padded_int_to_float(candle.volume, asset_decimals)
+        if c > o:
+            append_dict = ups
+        if c < o:
+            append_dict = downs
+        if c == o:
+            append_dict = append_dict
+        append_dict["x"].append(timestamp_to_datetime(candle.start, nano=True))
+        append_dict["v"].append(v)
+    ax.bar(
+        ups["x"],
+        ups["v"],
+        color="g",
+        width=interval / (24 * 60 * 60),
+        align="edge",
+        edgecolor="k",
+        linewidth=0.1,
+    )
+    ax.bar(
+        downs["x"],
+        downs["v"],
+        color="r",
+        width=interval / (24 * 60 * 60),
+        align="edge",
+        edgecolor="k",
+        linewidth=0.1,
+    )
 
 
 def overlay_size(
