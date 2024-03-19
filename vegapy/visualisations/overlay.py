@@ -279,6 +279,368 @@ def overlay_mark_price_sources(
         )
 
 
+def overlay_required_liquidity(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {"x": [], "y": []})
+    for market_data in market_data_history:
+        dt = timestamp_to_datetime(market_data.timestamp, nano=True)
+
+        for liquidity_provider_sla in market_data.liquidity_provider_sla:
+            data[liquidity_provider_sla.party]["x"].append(dt)
+            data[liquidity_provider_sla.party]["y"].append(
+                liquidity_provider_sla.required_liquidity
+            )
+
+    party_ids = party_ids if party_ids is not None else data.keys()
+    for party_id in party_ids:
+        ax.step(
+            data[party_id]["x"],
+            data[party_id]["y"],
+            label=party_id,
+            where="post",
+            **kwargs,
+        )
+
+
+def overlay_required_liquidity(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    asset_decimals: int,
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {"x": [], "y": []})
+    for market_data in market_data_history:
+        dt = timestamp_to_datetime(market_data.timestamp, nano=True)
+
+        for liquidity_provider_sla in market_data.liquidity_provider_sla:
+            data[liquidity_provider_sla.party]["x"].append(dt)
+            data[liquidity_provider_sla.party]["y"].append(
+                padded_int_to_float(
+                    float(liquidity_provider_sla.required_liquidity),
+                    asset_decimals,
+                )
+                if liquidity_provider_sla.notional_volume_buys != ""
+                else np.nan
+            )
+
+    party_ids = party_ids if party_ids is not None else data.keys()
+    for party_id in party_ids:
+        ax.step(
+            data[party_id]["x"],
+            data[party_id]["y"],
+            label=f"required_liquidity: {party_id[:7]}",
+            where="post",
+            **kwargs,
+        )
+
+
+def overlay_els(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {})
+    for market_data in market_data_history:
+        dt = timestamp_to_datetime(market_data.timestamp, nano=True)
+        for (
+            liquidity_provider_fee_share
+        ) in market_data.liquidity_provider_fee_share:
+            if (
+                party_ids is not None
+                and liquidity_provider_fee_share.party not in party_ids
+            ):
+                continue
+            data[dt][liquidity_provider_fee_share.party] = (
+                float(liquidity_provider_fee_share.equity_like_share)
+                if liquidity_provider_fee_share.equity_like_share != ""
+                else np.nan
+            )
+    df = pd.DataFrame.from_dict(data, orient="index")
+    df = df.reindex(sorted(df.columns), axis=1)
+    ax.stackplot(
+        df.index.values,
+        df.values.T,
+        labels=[col[:7] for col in df.columns],
+        **kwargs,
+    )
+
+
+def overlay_average_score(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {})
+    for market_data in market_data_history:
+        dt = timestamp_to_datetime(market_data.timestamp, nano=True)
+        for (
+            liquidity_provider_fee_share
+        ) in market_data.liquidity_provider_fee_share:
+            if (
+                party_ids is not None
+                and liquidity_provider_fee_share.party not in party_ids
+            ):
+                continue
+            data[dt][liquidity_provider_fee_share.party] = (
+                float(liquidity_provider_fee_share.average_score)
+                if liquidity_provider_fee_share.average_score != ""
+                else np.nan
+            )
+    df = pd.DataFrame.from_dict(data, orient="index")
+    df = df.reindex(sorted(df.columns), axis=1)
+    ax.stackplot(
+        df.index.values,
+        df.values.T,
+        labels=[col[:7] for col in df.columns],
+        **kwargs,
+    )
+
+
+def overlay_stacked_balance_changes(
+    ax: Axes,
+    aggregated_balances: List[
+        protos.data_node.api.v2.trading_data.AggregatedBalance
+    ],
+    asset_decimals: int,
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {})
+    for aggregated_balance in aggregated_balances:
+        dt = timestamp_to_datetime(aggregated_balance.timestamp, nano=True)
+        if (
+            party_ids is not None
+            and aggregated_balance.party_id not in party_ids
+        ):
+            continue
+        data[dt][aggregated_balance.party_id] = (
+            padded_int_to_float(aggregated_balance.balance, asset_decimals)
+            if aggregated_balance.balance != ""
+            else np.nan
+        )
+    df = pd.DataFrame.from_dict(data, orient="index")
+    df = df.reindex(sorted(df.columns), axis=1)
+    ax.stackplot(
+        df.index.values,
+        df.values.T,
+        step="post",
+        labels=[col[:7] for col in df.columns],
+        **kwargs,
+    )
+
+
+def overlay_notional_volume_buys(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    asset_decimals: int,
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {"x": [], "y": []})
+    for market_data in market_data_history:
+        dt = timestamp_to_datetime(market_data.timestamp, nano=True)
+
+        for liquidity_provider_sla in market_data.liquidity_provider_sla:
+            data[liquidity_provider_sla.party]["x"].append(dt)
+            data[liquidity_provider_sla.party]["y"].append(
+                padded_int_to_float(
+                    float(liquidity_provider_sla.notional_volume_buys),
+                    asset_decimals,
+                )
+                if liquidity_provider_sla.notional_volume_buys != ""
+                else np.nan
+            )
+
+    party_ids = party_ids if party_ids is not None else data.keys()
+    for party_id in party_ids:
+        ax.step(
+            data[party_id]["x"],
+            data[party_id]["y"],
+            label=f"notional_volume_buys: {party_id[:7]}",
+            where="post",
+            **kwargs,
+        )
+
+
+def overlay_notional_volume_sells(
+    ax: Axes,
+    market_data_history: List[protos.vega.vega.MarketData],
+    asset_decimals: int,
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {"x": [], "y": []})
+    for market_data in market_data_history:
+        dt = timestamp_to_datetime(market_data.timestamp, nano=True)
+
+        for liquidity_provider_sla in market_data.liquidity_provider_sla:
+            data[liquidity_provider_sla.party]["x"].append(dt)
+            data[liquidity_provider_sla.party]["y"].append(
+                padded_int_to_float(
+                    float(liquidity_provider_sla.notional_volume_sells),
+                    asset_decimals,
+                )
+                if liquidity_provider_sla.notional_volume_buys != ""
+                else np.nan
+            )
+
+    party_ids = party_ids if party_ids is not None else data.keys()
+    for party_id in party_ids:
+        ax.step(
+            data[party_id]["x"],
+            data[party_id]["y"],
+            label=f"notional_volume_sells: {party_id[:7]}",
+            where="post",
+            **kwargs,
+        )
+
+
+def overlay_current_epoch_fraction_of_time_on_book(
+    ax: Axes,
+    market: protos.vega.markets.Market,
+    market_data_history: List[protos.vega.vega.MarketData],
+    party_ids: Optional[List[str]] = None,
+    **kwargs,
+):
+    data = defaultdict(lambda: {"x": [], "y": []})
+    for market_data in market_data_history:
+        dt = timestamp_to_datetime(market_data.timestamp, nano=True)
+
+        for liquidity_provider_sla in market_data.liquidity_provider_sla:
+            data[liquidity_provider_sla.party]["x"].append(dt)
+            data[liquidity_provider_sla.party]["y"].append(
+                float(
+                    liquidity_provider_sla.current_epoch_fraction_of_time_on_book
+                )
+                if liquidity_provider_sla.current_epoch_fraction_of_time_on_book
+                != ""
+                else np.nan
+            )
+    ax.axhline(
+        float(market.liquidity_sla_params.commitment_min_time_fraction),
+        alpha=0.5,
+        color="r",
+        linewidth=0.5,
+        label="commitment_min_time_fraction",
+    )
+
+    party_ids = party_ids if party_ids is not None else data.keys()
+    for party_id in party_ids:
+        ax.step(
+            data[party_id]["x"],
+            data[party_id]["y"],
+            label=f"current_epoch_fraction_of_time_on_book: {party_id[:7]}",
+            where="post",
+            **kwargs,
+        )
+
+
+def overlay_sla_ledger_entries(
+    ax: Axes,
+    ledger_entries: List[
+        protos.data_node.api.v2.trading_data.AggregatedLedgerEntry
+    ],
+    asset_decimals: int,
+    party_id: str,
+    interval: Optional[int] = 60,
+    **kwargs,
+):
+    unpaid = defaultdict(float)
+    bonuses = defaultdict(float)
+    penalties = defaultdict(float)
+    distributed = defaultdict(float)
+
+    for ledger_entry in ledger_entries:
+        if party_id not in [
+            ledger_entry.from_account_party_id,
+            ledger_entry.to_account_party_id,
+        ]:
+            continue
+
+        rounded_timestamp = ledger_entry.timestamp // (10 * 1e9) * (10 * 1e9)
+        dt = timestamp_to_datetime(rounded_timestamp, nano=True)
+        quantity = padded_int_to_float(ledger_entry.quantity, asset_decimals)
+
+        unpaid[dt] += 0
+        bonuses[dt] += 0
+        penalties[dt] += 0
+        distributed[dt] += 0
+
+        if (
+            ledger_entry.transfer_type
+            == protos.vega.vega.TransferType.TRANSFER_TYPE_SLA_PENALTY_LP_FEE_APPLY
+        ):
+            penalties[dt] += quantity
+
+        if (
+            ledger_entry.transfer_type
+            == protos.vega.vega.TransferType.TRANSFER_TYPE_LIQUIDITY_FEE_UNPAID_COLLECT
+        ):
+            unpaid[dt] += quantity
+
+        if (
+            ledger_entry.transfer_type
+            == protos.vega.vega.TransferType.TRANSFER_TYPE_LIQUIDITY_FEE_NET_DISTRIBUTE
+        ):
+            distributed[dt] += quantity
+
+        if (
+            ledger_entry.transfer_type
+            == protos.vega.vega.TransferType.TRANSFER_TYPE_SLA_PERFORMANCE_BONUS_DISTRIBUTE
+        ):
+            bonuses[dt] += quantity
+
+    ax.bar(
+        x=list(bonuses.keys()),
+        height=list(bonuses.values()),
+        bottom=np.array(list(distributed.values())),
+        width=-interval / (24 * 60 * 60),
+        align="edge",
+        label="bonus",
+        edgecolor="k",
+        color="darkgreen",
+        # hatch="////",
+    )
+    ax.bar(
+        x=list(distributed.keys()),
+        height=list(distributed.values()),
+        width=-interval / (24 * 60 * 60),
+        align="edge",
+        label="paid",
+        edgecolor="k",
+        color="lightgreen",
+    )
+    ax.bar(
+        x=list(unpaid.keys()),
+        height=list(unpaid.values()),
+        bottom=-np.array(list(unpaid.values())),
+        width=-interval / (24 * 60 * 60),
+        align="edge",
+        label="unpaid",
+        edgecolor="k",
+        color="orange",
+    )
+    ax.bar(
+        x=list(penalties.keys()),
+        height=list(penalties.values()),
+        bottom=-np.array(list(unpaid.values()))
+        - np.array(list(penalties.values())),
+        width=-interval / (24 * 60 * 60),
+        align="edge",
+        label="penalty",
+        edgecolor="k",
+        color="red",
+    )
+    ax.axhline(0, color="k", linewidth=1)
+
+
 def overlay_internal_price_sources():
     # TODO: Implement function
     pass
@@ -858,6 +1220,7 @@ def overlay_stacked_rewards(
     asset_decimal: int,
     reward_type_filter: protos.vega.vega.AccountType,
     cumulative: bool = False,
+    party_color_map: Dict[str, Any] = None,
     **kwargs,
 ):
     data = defaultdict(lambda: defaultdict(float))
@@ -870,14 +1233,26 @@ def overlay_stacked_rewards(
         data[reward.epoch][reward.party_id] += padded_int_to_float(
             reward.amount, asset_decimal
         )
-    df = pd.DataFrame.from_dict(data, orient="index").sort_index()
-    ax.stackplot(
-        df.index,
-        df.values.T.cumsum(axis=1) if cumulative else df.values.T,
-        step="post",
-        labels=[party_id[:7] for party_id in df.columns],
-        **kwargs,
-    )
+    df = pd.DataFrame.from_dict(data, orient="index").sort_index().fillna(0)
+    df = df.cumsum() if cumulative else df
+    bottom = np.array([0] * len(df.index))
+    for party_id, party_rewards in df.items():
+        ax.bar(
+            df.index,
+            party_rewards,
+            bottom=bottom,
+            align="edge",
+            label=party_id[:7],
+            edgecolor="k",
+            color=(
+                party_color_map[party_id]
+                if party_color_map is not None
+                else None
+            ),
+            width=-1,
+            **kwargs,
+        )
+        bottom += party_rewards
     for epoch in df.index:
         ax.axvline(
             epoch,
