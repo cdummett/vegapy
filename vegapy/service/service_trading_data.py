@@ -798,13 +798,26 @@ class TradingDataService:
     #     # TODO: Implement method
     #     pass
 
-    # def list_network_parameters(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def list_network_parameters(
+        self, max_pages: Optional[int] = None
+    ) -> List[protos.vega.vega.NetworkParameter]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListNetworkParametersRequest(),
+            request_func=lambda x: self.__stub.ListNetworkParameters(
+                x
+            ).network_parameters,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
 
-    # def get_network_parameter(self, max_pages: Optional[int] = None) -> Any:
-    #     # TODO: Implement method
-    #     pass
+    @log_client_method
+    def get_network_parameter(
+        self, key: str
+    ) -> protos.vega.vega.NetworkParameter:
+        return self.__stub.GetNetworkParameter(
+            trading_data.GetNetworkParameterRequest(key=key)
+        ).network_parameter
 
     # def list_checkpoints(self, max_pages: Optional[int] = None) -> Any:
     #     # TODO: Implement method

@@ -87,6 +87,13 @@ def governance_data(
 
 
 @fixture(scope="session")
+def network_parameters(
+    tds: TradingDataService,
+) -> List[protos.vega.vega.NetworkParameter]:
+    return tds.list_network_parameters(max_pages=1)
+
+
+@fixture(scope="session")
 def start_timestamp(tds: TradingDataService) -> int:
     return int(tds.get_vega_time() - (1 * 60 * 60 * 1e9))
 
