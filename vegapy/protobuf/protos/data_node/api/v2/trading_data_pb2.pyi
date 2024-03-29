@@ -1524,21 +1524,24 @@ class ObserveVotesResponse(_message.Message):
     ) -> None: ...
 
 class ListERC20MultiSigSignerAddedBundlesRequest(_message.Message):
-    __slots__ = ("node_id", "submitter", "epoch_seq", "pagination")
+    __slots__ = ("node_id", "submitter", "epoch_seq", "pagination", "chain_id")
     NODE_ID_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
     EPOCH_SEQ_FIELD_NUMBER: _ClassVar[int]
     PAGINATION_FIELD_NUMBER: _ClassVar[int]
+    CHAIN_ID_FIELD_NUMBER: _ClassVar[int]
     node_id: str
     submitter: str
     epoch_seq: str
     pagination: Pagination
+    chain_id: str
     def __init__(
         self,
         node_id: _Optional[str] = ...,
         submitter: _Optional[str] = ...,
         epoch_seq: _Optional[str] = ...,
         pagination: _Optional[_Union[Pagination, _Mapping]] = ...,
+        chain_id: _Optional[str] = ...,
     ) -> None: ...
 
 class ListERC20MultiSigSignerAddedBundlesResponse(_message.Message):
@@ -1604,6 +1607,7 @@ class ERC20MultiSigSignerAddedBundle(_message.Message):
         "timestamp",
         "signatures",
         "epoch_seq",
+        "chain_id",
     )
     NEW_SIGNER_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
@@ -1611,12 +1615,14 @@ class ERC20MultiSigSignerAddedBundle(_message.Message):
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     SIGNATURES_FIELD_NUMBER: _ClassVar[int]
     EPOCH_SEQ_FIELD_NUMBER: _ClassVar[int]
+    CHAIN_ID_FIELD_NUMBER: _ClassVar[int]
     new_signer: str
     submitter: str
     nonce: str
     timestamp: int
     signatures: str
     epoch_seq: str
+    chain_id: str
     def __init__(
         self,
         new_signer: _Optional[str] = ...,
@@ -1625,24 +1631,28 @@ class ERC20MultiSigSignerAddedBundle(_message.Message):
         timestamp: _Optional[int] = ...,
         signatures: _Optional[str] = ...,
         epoch_seq: _Optional[str] = ...,
+        chain_id: _Optional[str] = ...,
     ) -> None: ...
 
 class ListERC20MultiSigSignerRemovedBundlesRequest(_message.Message):
-    __slots__ = ("node_id", "submitter", "epoch_seq", "pagination")
+    __slots__ = ("node_id", "submitter", "epoch_seq", "pagination", "chain_id")
     NODE_ID_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
     EPOCH_SEQ_FIELD_NUMBER: _ClassVar[int]
     PAGINATION_FIELD_NUMBER: _ClassVar[int]
+    CHAIN_ID_FIELD_NUMBER: _ClassVar[int]
     node_id: str
     submitter: str
     epoch_seq: str
     pagination: Pagination
+    chain_id: str
     def __init__(
         self,
         node_id: _Optional[str] = ...,
         submitter: _Optional[str] = ...,
         epoch_seq: _Optional[str] = ...,
         pagination: _Optional[_Union[Pagination, _Mapping]] = ...,
+        chain_id: _Optional[str] = ...,
     ) -> None: ...
 
 class ListERC20MultiSigSignerRemovedBundlesResponse(_message.Message):
@@ -1708,6 +1718,7 @@ class ERC20MultiSigSignerRemovedBundle(_message.Message):
         "timestamp",
         "signatures",
         "epoch_seq",
+        "chain_id",
     )
     OLD_SIGNER_FIELD_NUMBER: _ClassVar[int]
     SUBMITTER_FIELD_NUMBER: _ClassVar[int]
@@ -1715,12 +1726,14 @@ class ERC20MultiSigSignerRemovedBundle(_message.Message):
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     SIGNATURES_FIELD_NUMBER: _ClassVar[int]
     EPOCH_SEQ_FIELD_NUMBER: _ClassVar[int]
+    CHAIN_ID_FIELD_NUMBER: _ClassVar[int]
     old_signer: str
     submitter: str
     nonce: str
     timestamp: int
     signatures: str
     epoch_seq: str
+    chain_id: str
     def __init__(
         self,
         old_signer: _Optional[str] = ...,
@@ -1729,6 +1742,7 @@ class ERC20MultiSigSignerRemovedBundle(_message.Message):
         timestamp: _Optional[int] = ...,
         signatures: _Optional[str] = ...,
         epoch_seq: _Optional[str] = ...,
+        chain_id: _Optional[str] = ...,
     ) -> None: ...
 
 class GetERC20ListAssetBundleRequest(_message.Message):
