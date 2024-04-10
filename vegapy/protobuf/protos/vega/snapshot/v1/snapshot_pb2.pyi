@@ -1516,6 +1516,7 @@ class SpotMarket(_message.Message):
         "expiring_stop_orders",
         "fees_stats",
         "has_traded",
+        "market_liquidity",
     )
     MARKET_FIELD_NUMBER: _ClassVar[int]
     PRICE_MONITOR_FIELD_NUMBER: _ClassVar[int]
@@ -1539,6 +1540,7 @@ class SpotMarket(_message.Message):
     EXPIRING_STOP_ORDERS_FIELD_NUMBER: _ClassVar[int]
     FEES_STATS_FIELD_NUMBER: _ClassVar[int]
     HAS_TRADED_FIELD_NUMBER: _ClassVar[int]
+    MARKET_LIQUIDITY_FIELD_NUMBER: _ClassVar[int]
     market: _markets_pb2.Market
     price_monitor: PriceMonitor
     auction_state: AuctionState
@@ -1565,6 +1567,7 @@ class SpotMarket(_message.Message):
     ]
     fees_stats: _events_pb2.FeesStats
     has_traded: bool
+    market_liquidity: MarketLiquidity
     def __init__(
         self,
         market: _Optional[_Union[_markets_pb2.Market, _Mapping]] = ...,
@@ -1593,6 +1596,7 @@ class SpotMarket(_message.Message):
         ] = ...,
         fees_stats: _Optional[_Union[_events_pb2.FeesStats, _Mapping]] = ...,
         has_traded: bool = ...,
+        market_liquidity: _Optional[_Union[MarketLiquidity, _Mapping]] = ...,
     ) -> None: ...
 
 class Market(_message.Message):
@@ -1628,6 +1632,7 @@ class Market(_message.Message):
         "mark_price_calculator",
         "internal_composite_price_calculator",
         "next_internal_composite_price_calc",
+        "market_liquidity",
     )
     MARKET_FIELD_NUMBER: _ClassVar[int]
     PRICE_MONITOR_FIELD_NUMBER: _ClassVar[int]
@@ -1660,6 +1665,7 @@ class Market(_message.Message):
     MARK_PRICE_CALCULATOR_FIELD_NUMBER: _ClassVar[int]
     INTERNAL_COMPOSITE_PRICE_CALCULATOR_FIELD_NUMBER: _ClassVar[int]
     NEXT_INTERNAL_COMPOSITE_PRICE_CALC_FIELD_NUMBER: _ClassVar[int]
+    MARKET_LIQUIDITY_FIELD_NUMBER: _ClassVar[int]
     market: _markets_pb2.Market
     price_monitor: PriceMonitor
     auction_state: AuctionState
@@ -1697,6 +1703,7 @@ class Market(_message.Message):
     mark_price_calculator: CompositePriceCalculator
     internal_composite_price_calculator: CompositePriceCalculator
     next_internal_composite_price_calc: int
+    market_liquidity: MarketLiquidity
     def __init__(
         self,
         market: _Optional[_Union[_markets_pb2.Market, _Mapping]] = ...,
@@ -1740,6 +1747,7 @@ class Market(_message.Message):
             _Union[CompositePriceCalculator, _Mapping]
         ] = ...,
         next_internal_composite_price_calc: _Optional[int] = ...,
+        market_liquidity: _Optional[_Union[MarketLiquidity, _Mapping]] = ...,
     ) -> None: ...
 
 class PartyMarginFactor(_message.Message):
@@ -4218,3 +4226,9 @@ class PartyProfile(_message.Message):
             _Iterable[_Union[_vega_pb2.Metadata, _Mapping]]
         ] = ...,
     ) -> None: ...
+
+class MarketLiquidity(_message.Message):
+    __slots__ = ("price_range",)
+    PRICE_RANGE_FIELD_NUMBER: _ClassVar[int]
+    price_range: str
+    def __init__(self, price_range: _Optional[str] = ...) -> None: ...
