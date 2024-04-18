@@ -2264,17 +2264,20 @@ class EVMChainConfig(_message.Message):
         "collateral_bridge_contract",
         "confirmations",
         "multisig_control_contract",
+        "block_time",
     )
     NETWORK_ID_FIELD_NUMBER: _ClassVar[int]
     CHAIN_ID_FIELD_NUMBER: _ClassVar[int]
     COLLATERAL_BRIDGE_CONTRACT_FIELD_NUMBER: _ClassVar[int]
     CONFIRMATIONS_FIELD_NUMBER: _ClassVar[int]
     MULTISIG_CONTROL_CONTRACT_FIELD_NUMBER: _ClassVar[int]
+    BLOCK_TIME_FIELD_NUMBER: _ClassVar[int]
     network_id: str
     chain_id: str
     collateral_bridge_contract: EthereumContractConfig
     confirmations: int
     multisig_control_contract: EthereumContractConfig
+    block_time: str
     def __init__(
         self,
         network_id: _Optional[str] = ...,
@@ -2286,6 +2289,7 @@ class EVMChainConfig(_message.Message):
         multisig_control_contract: _Optional[
             _Union[EthereumContractConfig, _Mapping]
         ] = ...,
+        block_time: _Optional[str] = ...,
     ) -> None: ...
 
 class EthereumContractConfig(_message.Message):
