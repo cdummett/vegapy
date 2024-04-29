@@ -197,7 +197,6 @@ class Payload(_message.Message):
         "l2_eth_oracles",
         "eth_oracle_verifier_misc",
         "banking_evm_bridge_states",
-        "evm_event_forwarders",
         "evm_multisig_topologies",
     )
     ACTIVE_ASSETS_FIELD_NUMBER: _ClassVar[int]
@@ -279,7 +278,6 @@ class Payload(_message.Message):
     L2_ETH_ORACLES_FIELD_NUMBER: _ClassVar[int]
     ETH_ORACLE_VERIFIER_MISC_FIELD_NUMBER: _ClassVar[int]
     BANKING_EVM_BRIDGE_STATES_FIELD_NUMBER: _ClassVar[int]
-    EVM_EVENT_FORWARDERS_FIELD_NUMBER: _ClassVar[int]
     EVM_MULTISIG_TOPOLOGIES_FIELD_NUMBER: _ClassVar[int]
     active_assets: ActiveAssets
     pending_assets: PendingAssets
@@ -360,7 +358,6 @@ class Payload(_message.Message):
     l2_eth_oracles: L2EthOracles
     eth_oracle_verifier_misc: EthOracleVerifierMisc
     banking_evm_bridge_states: BankingEVMBridgeStates
-    evm_event_forwarders: EVMEventForwarders
     evm_multisig_topologies: EVMMultisigTopologies
     def __init__(
         self,
@@ -528,9 +525,6 @@ class Payload(_message.Message):
         ] = ...,
         banking_evm_bridge_states: _Optional[
             _Union[BankingEVMBridgeStates, _Mapping]
-        ] = ...,
-        evm_event_forwarders: _Optional[
-            _Union[EVMEventForwarders, _Mapping]
         ] = ...,
         evm_multisig_topologies: _Optional[
             _Union[EVMMultisigTopologies, _Mapping]
@@ -787,19 +781,6 @@ class EventForwarder(_message.Message):
             _Iterable[_Union[EventForwarderBucket, _Mapping]]
         ] = ...,
         chain_id: _Optional[str] = ...,
-    ) -> None: ...
-
-class EVMEventForwarders(_message.Message):
-    __slots__ = ("evm_event_forwarders",)
-    EVM_EVENT_FORWARDERS_FIELD_NUMBER: _ClassVar[int]
-    evm_event_forwarders: _containers.RepeatedCompositeFieldContainer[
-        EventForwarder
-    ]
-    def __init__(
-        self,
-        evm_event_forwarders: _Optional[
-            _Iterable[_Union[EventForwarder, _Mapping]]
-        ] = ...,
     ) -> None: ...
 
 class CollateralAccounts(_message.Message):
@@ -1157,13 +1138,17 @@ class GovernanceBatchActive(_message.Message):
     ) -> None: ...
 
 class GovernanceNode(_message.Message):
-    __slots__ = ("proposals", "proposal_data")
+    __slots__ = ("proposals", "proposal_data", "batch_proposal_data")
     PROPOSALS_FIELD_NUMBER: _ClassVar[int]
     PROPOSAL_DATA_FIELD_NUMBER: _ClassVar[int]
+    BATCH_PROPOSAL_DATA_FIELD_NUMBER: _ClassVar[int]
     proposals: _containers.RepeatedCompositeFieldContainer[
         _governance_pb2.Proposal
     ]
     proposal_data: _containers.RepeatedCompositeFieldContainer[ProposalData]
+    batch_proposal_data: _containers.RepeatedCompositeFieldContainer[
+        BatchProposalData
+    ]
     def __init__(
         self,
         proposals: _Optional[
@@ -1171,6 +1156,9 @@ class GovernanceNode(_message.Message):
         ] = ...,
         proposal_data: _Optional[
             _Iterable[_Union[ProposalData, _Mapping]]
+        ] = ...,
+        batch_proposal_data: _Optional[
+            _Iterable[_Union[BatchProposalData, _Mapping]]
         ] = ...,
     ) -> None: ...
 
@@ -3431,10 +3419,12 @@ class MarketTracker(_message.Message):
         "market_activity",
         "taker_notional_volume",
         "market_to_party_taker_notional_volume",
+        "epoch_taker_fees",
     )
     MARKET_ACTIVITY_FIELD_NUMBER: _ClassVar[int]
     TAKER_NOTIONAL_VOLUME_FIELD_NUMBER: _ClassVar[int]
     MARKET_TO_PARTY_TAKER_NOTIONAL_VOLUME_FIELD_NUMBER: _ClassVar[int]
+    EPOCH_TAKER_FEES_FIELD_NUMBER: _ClassVar[int]
     market_activity: _containers.RepeatedCompositeFieldContainer[
         _checkpoint_pb2.MarketActivityTracker
     ]
@@ -3446,6 +3436,9 @@ class MarketTracker(_message.Message):
             _checkpoint_pb2.MarketToPartyTakerNotionalVolume
         ]
     )
+    epoch_taker_fees: _containers.RepeatedCompositeFieldContainer[
+        _checkpoint_pb2.EpochPartyTakerFees
+    ]
     def __init__(
         self,
         market_activity: _Optional[
@@ -3460,6 +3453,9 @@ class MarketTracker(_message.Message):
                     _checkpoint_pb2.MarketToPartyTakerNotionalVolume, _Mapping
                 ]
             ]
+        ] = ...,
+        epoch_taker_fees: _Optional[
+            _Iterable[_Union[_checkpoint_pb2.EpochPartyTakerFees, _Mapping]]
         ] = ...,
     ) -> None: ...
 
