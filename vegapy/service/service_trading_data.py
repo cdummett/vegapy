@@ -8,11 +8,11 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import TypeVar, Optional, Callable, List, Any
 
-from vegapy.protobuf.protos.data_node.api.v2 import trading_data
-from vegapy.protobuf.protos.data_node.api.v2.trading_data_pb2_grpc import (
+from vega_python_protos.protos.data_node.api.v2 import trading_data
+from vega_python_protos.protos.data_node.api.v2.trading_data_pb2_grpc import (
     TradingDataServiceStub,
 )
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 from vegapy.service.networks.constants import Network
 
 

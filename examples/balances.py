@@ -12,7 +12,7 @@ from vegapy.visualisations.overlay import (
     overlay_balance,
 )
 from vegapy.utils import datetime_to_timestamp
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 
 
 # TODO: Tidy up the help formatter for the argument parser

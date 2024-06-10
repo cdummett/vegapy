@@ -4,7 +4,7 @@ from vegapy.service.service_trading_data import TradingDataService
 from tests.fixtures import logger, tds, governance_data
 from typing import List, Any
 
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 import pytest
 
 

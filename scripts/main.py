@@ -5,7 +5,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 import vegapy.visualisations as vis
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 from vegapy.service.service import Service
 from vegapy.service.networks.constants import Network
 from scripts.parser import PARSER

@@ -9,7 +9,7 @@ from tests.fixtures import (
     end_timestamp,
 )
 
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 
 
 @pytest.mark.trading_data_service

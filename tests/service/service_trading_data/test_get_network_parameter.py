@@ -3,7 +3,7 @@ import pytest
 from vegapy.service.service_trading_data import TradingDataService
 from tests.fixtures import tds, network_parameters
 
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 from typing import List
 
 

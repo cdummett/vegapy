@@ -6,7 +6,7 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
 from vegapy.service.service import Service
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 from vegapy.utils import timestamp_to_datetime, duration_str_to_int
 from vegapy.visualisations.overlay import *
 

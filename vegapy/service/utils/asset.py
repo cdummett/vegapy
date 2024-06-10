@@ -1,4 +1,4 @@
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 
 from typing import List
 from logging import getLogger

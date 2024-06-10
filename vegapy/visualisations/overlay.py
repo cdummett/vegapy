@@ -1,7 +1,7 @@
 import datetime
 import numpy as np
 import pandas as pd
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 
 from typing import List, Optional, Callable, Any, Dict
 from matplotlib.axes import Axes
