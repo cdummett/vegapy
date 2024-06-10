@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 from vegapy.visualisations.overlay import *
 from vegapy.utils import timestamp_to_datetime
 

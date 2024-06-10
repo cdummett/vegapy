@@ -5,7 +5,7 @@ from tests.fixtures import tds, epoch_reward_summaries
 
 from typing import List
 
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 
 
 @pytest.mark.trading_data_service

@@ -3,7 +3,7 @@ import pytest
 from vegapy.service.service_trading_data import TradingDataService
 from tests.fixtures import tds, markets, parties
 
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 
 
 @pytest.mark.trading_data_service

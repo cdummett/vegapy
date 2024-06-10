@@ -1,7 +1,7 @@
 import logging
 
 from typing import List
-import vegapy.protobuf.protos as protos
+import vega_python_protos.protos as protos
 
 from vegapy.service.networks.constants import Network
 from vegapy.service.service_trading_data import TradingDataService
