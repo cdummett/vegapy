@@ -85,7 +85,7 @@ def liquidation_analysis(
     ax2l.sharex(ax0l)
     ax2l.axhline(0, alpha=0.5, color="k", linewidth=1)
     ax2l.ticklabel_format(axis="y", style="sci", scilimits=(3, 3))
-    overlay_network_position(ax2l, trades, market.position_decimal_places)
+    overlay_position(ax2l, trades, market.position_decimal_places, "network")
     ax2l.set_ylabel("network position")
 
     ax3l = fig.add_subplot(gs[2, 1])
