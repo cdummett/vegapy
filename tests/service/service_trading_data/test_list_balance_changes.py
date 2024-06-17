@@ -73,8 +73,11 @@ def test_list_balance_changes_account_types(
 def test_list_balance_changes_start_timestamp(
     tds: TradingDataService,
     start_timestamp,
+    markets,
 ):
+    market_ids_filter = markets[:1]
     for aggregated_balance in tds.list_balance_changes(
+        market_ids=market_ids_filter,
         date_range_start_timestamp=start_timestamp,
         max_pages=1,
     ):
@@ -83,9 +86,15 @@ def test_list_balance_changes_start_timestamp(
 
 @pytest.mark.trading_data_service
 def test_list_balance_changes_end_timestamp(
-    tds: TradingDataService, end_timestamp
+    tds: TradingDataService,
+    start_timestamp,
+    end_timestamp,
+    markets,
 ):
+    market_ids_filter = markets[:1]
     for aggregated_balance in tds.list_balance_changes(
+        market_ids=market_ids_filter,
+        date_range_start_timestamp=start_timestamp,
         date_range_end_timestamp=end_timestamp,
         max_pages=1,
     ):
