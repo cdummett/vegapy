@@ -1060,3 +1060,24 @@ class TradingDataService:
     # ) -> Any:
     #     # TODO: Implement method
     #     pass
+
+    @log_client_method
+    def list_amms(
+        self,
+        market_id: Optional[str] = None,
+        party_id: Optional[str] = None,
+        amm_party_id: Optional[str] = None,
+        status: Optional[protos.vega.events.v1.events.AMM.Status.Value] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[protos.vega.events.v1.events.AMM]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListAMMsRequest(
+                party_id=party_id,
+                market_id=market_id,
+                amm_party_id=amm_party_id,
+                status=status,
+            ),
+            request_func=lambda x: self.__stub.ListAMMs(x).amms,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )
