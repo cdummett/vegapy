@@ -7,15 +7,21 @@ logger = logging.getLogger(__name__)
 
 
 class Network(Enum):
-    NETWORK_LOCAL = 0
-    NETWORK_MAINNET = 1
-    NETWORK_TESTNET = 2
-    NETWORK_STAGNET = 3
+    NETWORK_UNSPECIFIED = 0
+    NETWORK_LOCAL = 1
+    NETWORK_MAINNET = 2
+    NETWORK_TESTNET = 3
+    NETWORK_STAGNET = 4
 
     @property
     def config(self) -> Path:
-        if self.value == 0:
-            return None
-        return (
-            Path(__file__).parent / f"{self.name.lower().split('_')[1]}.toml"
-        )
+        match self.value:
+            case 0:
+                return None
+            case 1:
+                return None
+            case _:
+                return (
+                    Path(__file__).parent
+                    / f"{self.name.lower().split('_')[1]}.toml"
+                )

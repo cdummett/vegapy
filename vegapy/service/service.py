@@ -12,6 +12,8 @@ class Service:
         self,
         network: str,
         network_config: Optional[Path] = None,
+        port_data_node: Optional[int] = None,
+        port_core_node: Optional[int] = None,
     ):
         # Compartmentalise APIs
         class API:
@@ -20,7 +22,9 @@ class Service:
                 network: Network,
             ):
                 # TODO: Implement core service APIs
-                self.__data = TradingDataService(network, network_config)
+                self.__data = TradingDataService(
+                    network, network_config, port_data_node
+                )
                 self.__core = CoreService()
 
             @property

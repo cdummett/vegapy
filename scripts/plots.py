@@ -42,23 +42,29 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
     # Instantiate service for specified network
-    if args.network == "mainnet":
-        network = Network.NETWORK_MAINNET
-    if args.network == "stagnet":
-        network = Network.NETWORK_STAGNET
-    if args.network == "testnet":
-        network = Network.NETWORK_TESTNET
-    if args.network == "local":
-        network = Network.NETWORK_LOCAL
+    match args.network:
+        case "mainnet":
+            network = Network.NETWORK_MAINNET
+        case "stagnet":
+            network = Network.NETWORK_STAGNET
+        case "testnet":
+            network = Network.NETWORK_TESTNET
+        case "local":
+            network = Network.NETWORK_LOCAL
+            if args.port is None:
+                raise ValueError(
+                    "A port (--port) must be specified for local network."
+                )
+        case _:
+            network = Network.NETWORK_UNSPECIFIED
+            if args.config is None:
+                raise ValueError(
+                    "A config path (--config) must be specified for unspecified network."
+                )
     service = Service(
         network=network,
-        network_config=(
-            Path(
-                f"{args.config}/vegahome/config/wallet-service/networks/local.toml"
-            )
-            if args.config is not None
-            else None
-        ),
+        network_config=args.config,
+        port_data_node=args.port,
     )
 
     # Request required data from network
