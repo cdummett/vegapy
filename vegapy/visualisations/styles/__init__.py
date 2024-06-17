@@ -1,17 +1,16 @@
 import matplotlib.pyplot as plt
+import pkg_resources
 
 
 def light():
-    plt.style.use(
-        [
-            "vegapy/visualisations/styles/theme-light.mplstyle",
-        ]
+    style_path = pkg_resources.resource_filename(
+        "vegapy.visualisations.styles", "theme-light.mplstyle"
     )
+    plt.style.use(style_path)
 
 
 def dark():
-    plt.style.use(
-        [
-            "vegapy/visualisations/styles/theme-dark.mplstyle",
-        ]
+    style_path = pkg_resources.resource_filename(
+        "vegapy.visualisations.styles", "theme-dark.mplstyle"
     )
+    plt.style.use(style_path)

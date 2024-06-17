@@ -14,11 +14,6 @@ from vegapy.visualisations.overlay import *
 from vegapy.service.networks.constants import Network
 
 
-import vegapy.visualisations.styles as styles
-
-styles.dark()
-
-
 def __party_defaults(
     amms: List[protos.vega.events.v1.events.AMM],
 ) -> List[str]:
