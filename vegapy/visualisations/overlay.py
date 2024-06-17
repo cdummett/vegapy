@@ -403,35 +403,30 @@ def overlay_average_score(
     )
 
 
-def overlay_stacked_balance_changes(
+def overlay_aggregated_balances(
     ax: Axes,
     aggregated_balances: List[
         protos.data_node.api.v2.trading_data.AggregatedBalance
     ],
     asset_decimals: int,
-    party_ids: Optional[List[str]] = None,
     **kwargs,
 ):
-    data = defaultdict(lambda: {})
+    data = defaultdict(lambda: defaultdict(lambda: float))
     for aggregated_balance in aggregated_balances:
         dt = timestamp_to_datetime(aggregated_balance.timestamp, nano=True)
-        if (
-            party_ids is not None
-            and aggregated_balance.party_id not in party_ids
-        ):
-            continue
-        data[dt][aggregated_balance.party_id] = (
+        balance = (
             padded_int_to_float(aggregated_balance.balance, asset_decimals)
             if aggregated_balance.balance != ""
             else np.nan
         )
-    df = pd.DataFrame.from_dict(data, orient="index")
-    df = df.reindex(sorted(df.columns), axis=1)
-    ax.stackplot(
+        data[dt][aggregated_balance.account_type] = balance
+    df = pd.DataFrame.from_dict(data, orient="index").sort_index().ffill()
+    df = df.apply(lambda col: col - col.iloc[0], axis=0)
+    ax.step(
         df.index.values,
-        df.values.T,
-        step="post",
-        labels=[col[:7] for col in df.columns],
+        df.sum(axis=1).values,
+        where="post",
+        label="aggregated balances",
         **kwargs,
     )
 
@@ -974,10 +969,11 @@ def overlay_infrastructure_fee(
     ax.step(x, y, label="infrastructure_fee", where="post")
 
 
-def overlay_network_position(
+def overlay_position(
     ax: Axes,
     trades: List[protos.vega.vega.Trade],
     size_decimals: int,
+    party_id: str,
 ):
     x = []
     y = []
@@ -985,13 +981,13 @@ def overlay_network_position(
     for trade in reversed(trades):
         dt = timestamp_to_datetime(trade.timestamp, nano=True)
         size = padded_int_to_float(trade.size, size_decimals)
-        if trade.buyer == "network":
+        if trade.buyer == party_id:
             if trade.timestamp != last_timestamp:
                 x.append(dt)
                 y.append(y[-1] if y != [] else 0)
                 last_timestamp = trade.timestamp
             y[-1] += +size
-        if trade.seller == "network":
+        if trade.seller == party_id:
             if trade.timestamp != last_timestamp:
                 x.append(dt)
                 y.append(y[-1] if y != [] else 0)

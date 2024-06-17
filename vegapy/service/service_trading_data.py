@@ -74,20 +74,36 @@ class TradingDataService:
         self,
         network: Network,
         network_config: Optional[Path] = None,
+        port_data_node: Optional[int] = None,
     ):
-        if network is Network.NETWORK_LOCAL:
-            if network_config is None:
-                raise ValueError(
-                    "A network config file must be provided for an unspecified network"
-                )
-            self.__load_config(network_config)
-        else:
-            self.__load_config(network.config)
 
         self.__node = None
-        self.__grpc_nodes = dict.fromkeys(
-            self.__config["API"]["GRPC"]["Hosts"], 0
-        )
+
+        match network:
+
+            case Network.NETWORK_UNSPECIFIED:
+                if network_config is None:
+                    raise ValueError(
+                        "A network config file must be provided for an unspecified network"
+                    )
+                self.__grpc_nodes = self.__nodes_from_config(network_config)
+
+            case Network.NETWORK_LOCAL:
+                if port_data_node is None:
+                    raise ValueError(
+                        "A data node port must be specified for a local network."
+                    )
+                self.__grpc_nodes = dict.fromkeys(
+                    [f"localhost:{port_data_node}"]
+                )
+
+            case (
+                Network.NETWORK_MAINNET
+                | Network.NETWORK_TESTNET
+                | Network.NETWORK_STAGNET
+            ):
+                self.__grpc_nodes = self.__nodes_from_config(network.config)
+
         self.score_nodes()
         self.switch_node()
 
@@ -145,12 +161,13 @@ class TradingDataService:
             self.__channel.close()
             raise e
 
-    def __load_config(self, network_config: Path):
+    def __nodes_from_config(self, network_config: Path) -> dict:
         if not network_config.exists():
             raise ValueError(
                 f"Config for {network_config.absolute()} does not exist."
             )
-        self.__config = toml.load(network_config.absolute())
+        config = toml.load(network_config.absolute())
+        return dict.fromkeys(config["API"]["GRPC"]["Hosts"], 0)
 
     @log_client_method
     def ping(self):
@@ -1060,3 +1077,24 @@ class TradingDataService:
     # ) -> Any:
     #     # TODO: Implement method
     #     pass
+
+    @log_client_method
+    def list_amms(
+        self,
+        market_id: Optional[str] = None,
+        party_id: Optional[str] = None,
+        amm_party_id: Optional[str] = None,
+        status: Optional[protos.vega.events.v1.events.AMM.Status.Value] = None,
+        max_pages: Optional[int] = None,
+    ) -> List[protos.vega.events.v1.events.AMM]:
+        return unroll_v2_pagination(
+            base_request=trading_data.ListAMMsRequest(
+                party_id=party_id,
+                market_id=market_id,
+                amm_party_id=amm_party_id,
+                status=status,
+            ),
+            request_func=lambda x: self.__stub.ListAMMs(x).amms,
+            extraction_func=lambda res: [i.node for i in res.edges],
+            max_pages=max_pages,
+        )

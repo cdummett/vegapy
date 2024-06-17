@@ -20,11 +20,16 @@ general_options.add_argument(
     help="Specify market to request data for.",
 )
 general_options.add_argument(
-    "-c",
+    "--port",
+    required=False,
+    type=str,
+    help="Specify path to network config file (only required when network local).",
+)
+general_options.add_argument(
     "--config",
     required=False,
     type=str,
-    help="Specify path to network config file (only required when targetting a local network).",
+    help="Specify path to network config file (only required when network unspecified).",
 )
 general_options.add_argument(
     "-p",

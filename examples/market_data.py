@@ -38,6 +38,12 @@ PARSER.add_argument(
     help="Network to create service for. Specify testnet, stagnet, or mainnet.",
 )
 PARSER.add_argument(
+    "--port",
+    type=int,
+    default=None,
+    help="Specify port to request data from (only required when network local).",
+)
+PARSER.add_argument(
     "-c",
     "--config",
     type=str,
@@ -155,21 +161,30 @@ if __name__ == "__main__":
 
     args = PARSER.parse_args()
 
-    # Create a service for the specified network
-    if args.network == "local":
-        network = Network.NETWORK_LOCAL
-    elif args.network == "mainnet":
-        network = Network.NETWORK_MAINNET
-    elif args.network == "stagnet":
-        network = Network.NETWORK_STAGNET
-    elif args.network == "testnet":
-        network = Network.NETWORK_TESTNET
-    else:
-        raise ValueError(
-            f"Invalid network, {args.network}, selected. Please select, local, mainnet, stagnet, or testnet."
-        )
+    # Instantiate service for specified network
+    match args.network:
+        case "mainnet":
+            network = Network.NETWORK_MAINNET
+        case "stagnet":
+            network = Network.NETWORK_STAGNET
+        case "testnet":
+            network = Network.NETWORK_TESTNET
+        case "local":
+            network = Network.NETWORK_LOCAL
+            if args.port is None:
+                raise ValueError(
+                    "A port (--port) must be specified for local network."
+                )
+        case _:
+            network = Network.NETWORK_UNSPECIFIED
+            if args.config is None:
+                raise ValueError(
+                    "A config path (--config) must be specified for unspecified network."
+                )
     service = Service(
-        network, pathlib.Path(args.config) if args.config else None
+        network=network,
+        network_config=args.config,
+        port_data_node=args.port,
     )
 
     if args.start_datetime is None:
