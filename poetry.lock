@@ -3171,8 +3171,8 @@ pytest = "*"
 [package.source]
 type = "git"
 url = "https://github.com/vegaprotocol/vega-python-protos"
-reference = "develop"
-resolved_reference = "63bfaf1a33c2ac8ef8abff837df19dd7c09289ef"
+reference = "pre-release/vega-v0.77.0-preview.3"
+resolved_reference = "c6c8bd28b1e25a2b49fed0446282f62b59215fac"
 
 [[package]]
 name = "wcwidth"
@@ -3256,4 +3256,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9,<3.12"
-content-hash = "e336999ed37561a6b83c2d6b0d00e70fc2e83fd51ad6d548923e43009618ec3c"
+content-hash = "75083099632f73ebce82a56f29cf5b83ef991f993d2eb5b0cb8933d706ef08bd"
