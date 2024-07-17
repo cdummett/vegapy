@@ -3172,7 +3172,7 @@ pytest = "*"
 type = "git"
 url = "https://github.com/vegaprotocol/vega-python-protos"
 reference = "develop"
-resolved_reference = "63bfaf1a33c2ac8ef8abff837df19dd7c09289ef"
+resolved_reference = "fc87c48aa56fbe1d6325ee4398d1983fa4f7f13e"
 
 [[package]]
 name = "wcwidth"
