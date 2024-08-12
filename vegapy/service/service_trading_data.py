@@ -979,7 +979,7 @@ class TradingDataService:
         party_id: str,
         market_id: Optional[str] = None,
         max_pages: Optional[int] = None,
-    ) -> List[protos.vega.events.v1.events.FundingPayment]:
+    ) -> List[protos.data_node.api.v2.trading_data.FundingPayment]:
         return unroll_v2_pagination(
             base_request=trading_data.ListFundingPaymentsRequest(
                 party_id=party_id,

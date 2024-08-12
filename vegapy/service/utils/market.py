@@ -69,10 +69,13 @@ class MarketUtils:
         raise Exception("Market is not a spot market.")
 
     def find_settlement_asset(
-        self, substrings: List[str]
+        self,
+        substrings: List[str],
+        include_settled: bool = False,
     ) -> protos.vega.assets.Asset:
         instrument = self.find_market(
-            substrings=substrings
+            substrings=substrings,
+            include_settled=include_settled,
         ).tradable_instrument.instrument
         asset_id = None
         if instrument.future != protos.vega.markets.Future():

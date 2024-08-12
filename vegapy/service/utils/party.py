@@ -38,6 +38,8 @@ class PartyUtils:
         trades = self.__data.list_trades(
             party_ids=[party_id],
             market_ids=[market_id] if market_id is not None else None,
+            date_range_end_timestamp=int(vega_time),
+            date_range_start_timestamp=0,
         )
         data = defaultdict(lambda: defaultdict(int))
         for trade in trades:
